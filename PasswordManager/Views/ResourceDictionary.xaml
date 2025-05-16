@@ -4,6 +4,136 @@
     <FontFamily x:Key="MainFont">Impact</FontFamily>
 
     <Brush x:Key="BackColor">#242328</Brush>
-    <Brush x:Key="ControlsColor">#F25C05</Brush>
-    <Brush x:Key="ForeColor">White</Brush>
+    <Brush x:Key="ControlsColor">#e65705</Brush>
+    <Brush x:Key="ForeColor">#e9e7e2</Brush>
+
+    <Brush x:Key="ControlsHoverColor">#D53E07</Brush>
+    <Brush x:Key="ControlsPressColor">#A5260A</Brush>
+    <Brush x:Key="UnenabledColor">#858777</Brush>
+    
+    <Style x:Key="BaseButtonStyle" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="{StaticResource ControlsColor}"/>
+        <Setter Property="Foreground" Value="{StaticResource ForeColor}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border CornerRadius="10" Background="{TemplateBinding Background}">
+                        <Grid>
+                            <Label Content="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" FontSize="28" 
+                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{StaticResource ControlsHoverColor}" />
+                            <Setter Property="Foreground" Value="{StaticResource ForeColor}" />
+                        </Trigger>
+
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" Value="{StaticResource ControlsPressColor}" />
+                            <Setter Property="Foreground" Value="{StaticResource ForeColor}" />
+                        </Trigger>
+
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="{StaticResource UnenabledColor}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="TopButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border CornerRadius="10 10 0 0" Background="{TemplateBinding Background}">
+                        <Grid>
+                            <Label Content="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" FontSize="28" 
+                                    HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+                    
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{StaticResource ControlsHoverColor}" />
+                            <Setter Property="Foreground" Value="{StaticResource ForeColor}" />
+                        </Trigger>
+
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" Value="{StaticResource ControlsPressColor}" />
+                            <Setter Property="Foreground" Value="{StaticResource ForeColor}" />
+                        </Trigger>
+
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="{StaticResource UnenabledColor}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="CenterButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border Background="{TemplateBinding Background}">
+                        <Grid>
+                            <Label Content="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" FontSize="28" 
+                                HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{StaticResource ControlsHoverColor}" />
+                            <Setter Property="Foreground" Value="{StaticResource ForeColor}" />
+                        </Trigger>
+
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" Value="{StaticResource ControlsPressColor}" />
+                            <Setter Property="Foreground" Value="{StaticResource ForeColor}" />
+                        </Trigger>
+
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="{StaticResource UnenabledColor}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="BottomButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border CornerRadius="0 0 10 10" Background="{TemplateBinding Background}">
+                        <Grid>
+                            <Label Content="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" FontSize="28" 
+                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{StaticResource ControlsHoverColor}" />
+                            <Setter Property="Foreground" Value="{StaticResource ForeColor}" />
+                        </Trigger>
+
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" Value="{StaticResource ControlsPressColor}" />
+                            <Setter Property="Foreground" Value="{StaticResource ForeColor}" />
+                        </Trigger>
+
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="{StaticResource UnenabledColor}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>
