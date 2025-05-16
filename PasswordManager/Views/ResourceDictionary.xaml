@@ -19,7 +19,7 @@
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Border CornerRadius="10" Background="{TemplateBinding Background}">
                         <Grid>
-                            <Label Content="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" FontSize="28" 
+                            <Label Content="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" FontSize="22" 
                             HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Grid>
                     </Border>
