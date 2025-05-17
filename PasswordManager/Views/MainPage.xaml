@@ -32,7 +32,7 @@
                VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
         <Button Style="{StaticResource TopButtonStyle}" x:Name="PasswordsButton" Content="Passwords" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Margin="10 10 10 0" FontSize="28" Click="PasswordsButton_Click"/>
-        <Button Style="{StaticResource CenterButtonStyle}" x:Name="CardsButton" Content="Payment Methods" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="10 0" FontSize="28"/>
+        <Button Style="{StaticResource CenterButtonStyle}" x:Name="CardsButton" Content="Payment Methods" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="10 0" FontSize="28" Click="CardsButton_Click"/>
         <Button Style="{StaticResource BottomButtonStyle}" x:Name="NotesButton" Content="Notes" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Margin="10 0 10 10" FontSize="28"/>
     </Grid>
 </Page>
