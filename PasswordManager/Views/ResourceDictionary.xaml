@@ -143,11 +143,12 @@
         <Setter Property="Foreground" Value="{StaticResource ForeColor}"/>
         <Setter Property="SelectionBrush" Value="{StaticResource ControlsHoverColor}"/>
         <Setter Property="BorderBrush" Value="{StaticResource ForeColor}"/>
+        <Setter Property="BorderThickness" Value="2"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TextBox}">
-                    <Border x:Name="border" CornerRadius="5"
+                    <Border x:Name="border" CornerRadius="10"
                     BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
                         <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
                     </Border>
@@ -166,6 +167,18 @@
             </Setter.Value>
         </Setter>
 
+    </Style>
+
+    <Style TargetType="{x:Type ListBox}">
+        <Setter Property="Background" Value="{StaticResource ControlsColor}"/>
+        <Setter Property="Foreground" Value="{StaticResource ForeColor}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource ForeColor}"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Style.Resources>
+            <Style TargetType="Border">
+                <Setter Property="CornerRadius" Value="10"></Setter>
+            </Style>
+        </Style.Resources>
     </Style>
 
 </ResourceDictionary>
