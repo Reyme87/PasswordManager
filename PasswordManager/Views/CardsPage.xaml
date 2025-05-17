@@ -42,19 +42,19 @@
 
         <StackPanel Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Grid.RowSpan="3" Margin="5">
             <StackPanel Margin="5">
-                <Label Content="Card number: " FontSize="24" Foreground="{StaticResource ForeColor}" Padding="10"/>
-                <TextBox Text="Number" FontSize="22" Foreground="{StaticResource ForeColor}" Padding="10" VerticalAlignment="Center"/>
+                <Label Content="Card number: " FontSize="24" Foreground="{StaticResource ForeColor}" Padding="5"/>
+                <TextBox Text="Number" FontSize="22" Foreground="{StaticResource ForeColor}" Margin="10" Padding="5" VerticalAlignment="Center"/>
             </StackPanel>
 
             <DockPanel>
                 <StackPanel Margin="5">
-                    <Label Content="CVV/CVC: " FontSize="24" Foreground="{StaticResource ForeColor}" Padding="10"/>
-                    <TextBox FontSize="22" Foreground="{StaticResource ForeColor}" Padding="10" VerticalAlignment="Center"/>
+                    <Label Content="CVV/CVC: " FontSize="24" Foreground="{StaticResource ForeColor}" Padding="5"/>
+                    <TextBox Text="###" FontSize="22" Foreground="{StaticResource ForeColor}" Margin="10" Padding="5" VerticalAlignment="Center"/>
                 </StackPanel>
 
                 <StackPanel Margin="5">
-                    <Label Content="MM/YY: " FontSize="24" Foreground="{StaticResource ForeColor}" Padding="10"/>
-                    <TextBox Text="google.com" FontSize="22" Foreground="{StaticResource ForeColor}" Padding="10" VerticalAlignment="Center"/>
+                    <Label Content="MM/YY: " FontSize="24" Foreground="{StaticResource ForeColor}" Padding="5"/>
+                    <TextBox Text="month/year" FontSize="22" Foreground="{StaticResource ForeColor}" Margin="10" Padding="5" VerticalAlignment="Center"/>
                 </StackPanel>
             </DockPanel>
         </StackPanel>
