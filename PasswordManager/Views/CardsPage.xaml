@@ -28,7 +28,7 @@
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
 
-        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" FontSize="28" Foreground="{StaticResource ControlsColor}" Content="Your own payment methods manager"
+        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" FontSize="28" Foreground="{StaticResource ControlsColor}" Content="Your own payment manager"
        VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Arial Rounded MT Bold"/>
         <ListBox d:ItemsSource="{d:SampleData ItemCount=5}" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="3" Margin="5" FontSize="18"/>
 
@@ -40,6 +40,9 @@
         <Button Style="{StaticResource BaseButtonStyle}" Content="Export" Grid.Row="4" Grid.Column="3" Margin="10" Width="100" FontSize="20"
             HorizontalAlignment="Right"/>
 
+        <Button Style="{StaticResource BaseButtonStyle}" Content="&lt;&lt;" Grid.Row="0" Grid.Column="0" Margin="10" FontSize="20" FontFamily="{StaticResource AdditiveFont}"
+            HorizontalAlignment="Left" Width="50"/>
+        
         <StackPanel Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Grid.RowSpan="3" Margin="5">
             <StackPanel Margin="5">
                 <Label Content="Card number: " FontSize="24" Foreground="{StaticResource ForeColor}" Padding="5" Margin="10 0"/>
