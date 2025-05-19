@@ -5,10 +5,53 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:PasswordManager.Views"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="500" d:DesignWidth="600" FontFamily="{StaticResource MainFont}"
       Title="NotesPage">
 
-    <Grid>
-        
+    <Page.Resources>
+        <ResourceDictionary Source="ResourceDictionary.xaml"/>
+    </Page.Resources>
+
+    <Grid Background="{StaticResource BackColor}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.5*"/>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition Height="0.5*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" FontSize="28" Foreground="{StaticResource ControlsColor}" Content="Your own notes manager"
+               VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <ListBox d:ItemsSource="{d:SampleData ItemCount=5}" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="3" Margin="5" FontSize="18"/>
+
+        <Button Style="{StaticResource BaseButtonStyle}" Content="Add" Grid.Row="4" Grid.Column="0" Margin="10" FontSize="20"/>
+        <Button Style="{StaticResource BaseButtonStyle}" Content="Remove" Grid.Row="4" Grid.Column="1" Margin="10" FontSize="20"/>
+        <Button Style="{StaticResource BaseButtonStyle}" Content="Save" Grid.Row="4" Grid.Column="2" Margin="10" FontSize="20"/>
+        <Button Style="{StaticResource BaseButtonStyle}" Content="Import" Grid.Row="4" Grid.Column="3" Margin="10" Width="100" FontSize="20"
+                HorizontalAlignment="Left"/>
+        <Button Style="{StaticResource BaseButtonStyle}" Content="Export" Grid.Row="4" Grid.Column="3" Margin="10" Width="100" FontSize="20"
+                HorizontalAlignment="Right"/>
+
+        <Button Style="{StaticResource BaseButtonStyle}" Content="&lt;&lt;" Grid.Row="0" Grid.Column="0" Margin="10" FontSize="20" FontFamily="{StaticResource AdditiveFont}"
+                HorizontalAlignment="Left" Width="50" Click="Button_Click"/>
+
+        <StackPanel Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Grid.RowSpan="3" Margin="5">
+            <StackPanel Margin="5">
+                <Label Content="Name: " FontSize="24" Foreground="{StaticResource ForeColor}" Padding="5" Margin="10 0"/>
+                <TextBox Text="TEXT" FontSize="22" Margin="10" Padding="5" VerticalAlignment="Center"/>
+            </StackPanel>
+
+            <StackPanel Margin="5">
+                <TextBox Text="###" FontSize="22" Margin="10" Padding="5" TextWrapping="Wrap" AcceptsReturn="True" MaxHeight="200" VerticalAlignment="Stretch"/>
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </Page>

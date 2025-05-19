@@ -29,7 +29,7 @@
         </Grid.ColumnDefinitions>
 
         <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" FontSize="28" Foreground="{StaticResource ControlsColor}" Content="Your own payment manager"
-       VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Arial Rounded MT Bold"/>
+       VerticalAlignment="Center" HorizontalAlignment="Center"/>
         <ListBox d:ItemsSource="{d:SampleData ItemCount=5}" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="3" Margin="5" FontSize="18"/>
 
         <Button Style="{StaticResource BaseButtonStyle}" Content="Add" Grid.Row="4" Grid.Column="0" Margin="10" FontSize="20"/>
@@ -41,7 +41,7 @@
             HorizontalAlignment="Right"/>
 
         <Button Style="{StaticResource BaseButtonStyle}" Content="&lt;&lt;" Grid.Row="0" Grid.Column="0" Margin="10" FontSize="20" FontFamily="{StaticResource AdditiveFont}"
-            HorizontalAlignment="Left" Width="50"/>
+            HorizontalAlignment="Left" Width="50" Click="Button_Click"/>
         
         <StackPanel Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Grid.RowSpan="3" Margin="5">
             <StackPanel Margin="5">
