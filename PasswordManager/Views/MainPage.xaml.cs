@@ -24,5 +24,10 @@ namespace PasswordManager
         {
             NavigationService.Navigate(new CardsPage());
         }
+
+        private void NotesButton_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new NotesPage());
+        }
     }
 }
