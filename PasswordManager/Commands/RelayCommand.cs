@@ -2,7 +2,7 @@
 
 namespace PasswordManager.Commands
 {
-    class RelayCommand : Command
+    internal class RelayCommand : Command
     {
         private Action<object> _execute; 
         private Func<object, bool> _canExecute;
