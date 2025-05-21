@@ -34,5 +34,10 @@ namespace PasswordManager.Views
         {
             NavigationService.Navigate(new AddAccountPage());
         }
+
+        private void ChangeButton_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new AddAccountPage());
+        }
     }
 }
