@@ -32,5 +32,16 @@ namespace PasswordManager.Models
             get => _url;
             set => _url = value;
         }
+
+        public override bool Equals(object? obj)
+        {
+            if (obj is AccountModel account) return (Username == account.Username && Url == account.Url);
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return Url.GetHashCode();
+        }
     }
 }
