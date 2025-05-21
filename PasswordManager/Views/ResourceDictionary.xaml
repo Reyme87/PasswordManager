@@ -10,9 +10,10 @@
 
     <Brush x:Key="ControlsHoverColor">#D53E07</Brush>
     <Brush x:Key="ControlsPressColor">#A5260A</Brush>
-    <Brush x:Key="UnenabledColor">#858777</Brush>
+    <Brush x:Key="UnenabledColor">#333329</Brush>
     <Brush x:Key="SelectionColor">Yellow</Brush>
-    
+    <Brush x:Key="AdditionalHoverColor">#D6D4D0</Brush>
+
     <Style x:Key="BaseButtonStyle" TargetType="{x:Type Button}">
         <Setter Property="Background" Value="{StaticResource ControlsColor}"/>
         <Setter Property="Foreground" Value="{StaticResource ForeColor}"/>
@@ -56,7 +57,7 @@
                                     HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Grid>
                     </Border>
-                    
+
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="Background" Value="{StaticResource ControlsHoverColor}" />
@@ -139,7 +140,7 @@
         </Setter>
     </Style>
 
-    <Style TargetType="{x:Type TextBox}">
+    <Style x:Key="MainTextBox" TargetType="{x:Type TextBox}">
         <Setter Property="Background" Value="{StaticResource ControlsColor}"/>
         <Setter Property="Foreground" Value="{StaticResource ForeColor}"/>
         <Setter Property="SelectionBrush" Value="{StaticResource ControlsHoverColor}"/>
@@ -158,16 +159,43 @@
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="Background" Value="{StaticResource ControlsHoverColor}" />
                         </Trigger>
-                        <Trigger Property="IsSelectionActive" Value="True">
+                        <!--<Trigger Property="IsSelectionActive" Value="True">
                             <Setter Property="BorderBrush" Value="{StaticResource SelectionColor}" />
                             <Setter Property="VerticalContentAlignment" Value="Center"/>
                             <Setter Property="CaretBrush" Value="{StaticResource ForeColor}"/>
+                        </Trigger>-->
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="AddTextBox" TargetType="{x:Type TextBox}" BasedOn="{StaticResource MainTextBox}">
+        <Setter Property="Background" Value="{StaticResource ForeColor}"/>
+        <Setter Property="Foreground" Value="{StaticResource BackColor}"/>
+        <Setter Property="SelectionBrush" Value="{StaticResource UnenabledColor}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource BackColor}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBox}">
+                    <Border x:Name="border" CornerRadius="10"
+                        BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                        <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{StaticResource AdditionalHoverColor}" />
+                        </Trigger>
+                        <Trigger Property="IsSelectionActive" Value="True">
+                            <Setter Property="BorderBrush" Value="{StaticResource BackColor}" />
+                            <Setter Property="VerticalContentAlignment" Value="Center"/>
+                            <Setter Property="CaretBrush" Value="{StaticResource BackColor}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-
     </Style>
 
     <Style TargetType="{x:Type ListBox}">
