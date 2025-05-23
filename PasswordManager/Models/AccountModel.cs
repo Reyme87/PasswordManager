@@ -5,14 +5,16 @@ namespace PasswordManager.Models
     class AccountModel
     {
         private string? _username;
-        private string? _password;
+        private int[] _values;
         private string? _url;
+        private int[] _keys;
 
-        public AccountModel(string Username, string Password, string Url) 
+        public AccountModel(string Username, int[] Values, string Url, int[] Keys) 
         {
             _username = Username;
-            _password = Password;
+            _values = Values;
             _url = Url;
+            _keys = Keys;
         }
 
         public string? Username
@@ -21,16 +23,22 @@ namespace PasswordManager.Models
             set => _username = value; 
         }
 
-        public string? Password
+        public int[] Values
         {
-            get => _password;
-            set => _password = value;
+            get => _values;
+            set => _values = value;
         }
 
         public string? Url
         {
             get => _url;
             set => _url = value;
+        }
+        
+        public int[] Keys
+        {
+            get => _keys;
+            set => _keys = value;
         }
 
         public override bool Equals(object? obj)

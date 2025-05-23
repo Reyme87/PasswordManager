@@ -4,8 +4,8 @@
     <FontFamily x:Key="MainFont">Arial Rounded MT Bold</FontFamily>
     <FontFamily x:Key="AdditiveFont">Wide Latin</FontFamily>
 
-    <Brush x:Key="BackColor">#242328</Brush>
-    <Brush x:Key="ControlsColor">#e65705</Brush>
+    <Brush x:Key="BackColor">#212024</Brush>
+    <Brush x:Key="ControlsColor">#027A64</Brush>
     <Brush x:Key="ForeColor">#e9e7e2</Brush>
 
     <Brush x:Key="ControlsHoverColor">#D53E07</Brush>
@@ -13,6 +13,8 @@
     <Brush x:Key="UnenabledColor">#333329</Brush>
     <Brush x:Key="SelectionColor">Yellow</Brush>
     <Brush x:Key="AdditionalHoverColor">#D6D4D0</Brush>
+
+    <Image x:Key="CopyImage" Source="/Resources/copy.png"></Image>
 
     <Style x:Key="BaseButtonStyle" TargetType="{x:Type Button}">
         <Setter Property="Background" Value="{StaticResource ControlsColor}"/>

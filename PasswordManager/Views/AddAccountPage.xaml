@@ -33,25 +33,29 @@
             <ColumnDefinition Width="0.2*"/>
         </Grid.ColumnDefinitions>
 
+        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" FontSize="28" Foreground="{StaticResource ControlsColor}" Content="Add new account" 
+               VerticalAlignment="Center" HorizontalAlignment="Center"/>
         <Border Grid.Row="1" Grid.Column="1" Grid.RowSpan="3" Grid.ColumnSpan="2"
                 CornerRadius="10" Background="{StaticResource ControlsColor}" BorderThickness="2" BorderBrush="{StaticResource ForeColor}"
                 Margin="5">
             <StackPanel Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Grid.RowSpan="3" Margin="5">
                 <StackPanel Margin="5">
                     <Label Content="Username: " FontSize="24" Foreground="{StaticResource ForeColor}" Padding="5" Margin="10 0"/>
-                    <TextBox Style="{StaticResource AddTextBox}" Text="{Binding Username}" FontSize="22" Margin="10" Padding="5" VerticalAlignment="Center"/>
+                    <TextBox Style="{StaticResource AddTextBox}" Text="{Binding UsernameField}" FontSize="22" Margin="10" Padding="5" VerticalAlignment="Center"/>
                 </StackPanel>
 
                 <StackPanel Margin="5">
                     <Label Content="Password: " FontSize="24" Foreground="{StaticResource ForeColor}" Padding="5" Margin="10 0"/>
-                    <TextBox Style="{StaticResource AddTextBox}" Text="{Binding Password}" FontSize="22" Margin="10" Padding="5" VerticalAlignment="Center"/>
+                    <TextBox Style="{StaticResource AddTextBox}" Text="{Binding PasswordField}" FontSize="22" Margin="10" Padding="5" VerticalAlignment="Center"/>
                 </StackPanel>
 
                 <StackPanel Margin="5">
                     <Label Content="Website: " FontSize="24" Foreground="{StaticResource ForeColor}" Padding="5" Margin="10 0"/>
-                    <TextBox Style="{StaticResource AddTextBox}" Text="{Binding Url}" FontSize="22" Foreground="{StaticResource ForeColor}" Margin="10" Padding="5" VerticalAlignment="Center"/>
+                    <TextBox Style="{StaticResource AddTextBox}" Text="{Binding UrlField}" FontSize="22" Margin="10" Padding="5" VerticalAlignment="Center"/>
                 </StackPanel>
             </StackPanel>
         </Border>
+
+        <Button Command="{Binding AddAccountCommand}" Style="{StaticResource BaseButtonStyle}" Content="Save" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Width="250" Margin="10" FontSize="20"/>
     </Grid>
 </Page>
