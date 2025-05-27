@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using PasswordManager.ViewModels;
 
 namespace PasswordManager.Views
 {
@@ -20,9 +21,16 @@ namespace PasswordManager.Views
     /// </summary>
     public partial class AddAccountPage : Page
     {
+        private readonly PasswordsViewModel _vm = PasswordsViewModel.Instance;
         public AddAccountPage()
         {
             InitializeComponent();
+            DataContext = _vm;
+        }
+
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new PasswordsPage());
         }
     }
 }
