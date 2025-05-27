@@ -22,6 +22,9 @@ namespace PasswordManager.ViewModels
 {
     class PasswordsViewModel : ViewModel
     {
+        private static PasswordsViewModel _instance;
+        public static PasswordsViewModel Instance => _instance ??= new PasswordsViewModel();
+
         #region Элементы полей 
 
         private string? _username;
@@ -65,6 +68,9 @@ namespace PasswordManager.ViewModels
             }
         }
 
+        private bool isRevealed = false;
+        private bool isChanging = false;
+
         #endregion
 
         #region Коллекции элементов
@@ -81,7 +87,7 @@ namespace PasswordManager.ViewModels
                 Set(ref _selectedAccount, value);
                 if (_selectedAccount != null)
                 {
-                    SelectedPassword = new string('#', SelectedAccount.Values.Length);
+                    SelectedPassword = new string('●', SelectedAccount.Values.Length);
                 }
             }
         }
@@ -96,15 +102,43 @@ namespace PasswordManager.ViewModels
 
         public void OnAddAccountComandExecuted(object p)
         {
-            int[] Keys = GenerateKeys(PasswordField.Length);
-            int[] encryptedValues = Encrypt(PasswordField, Keys);
-            AccountModel account = new AccountModel(UsernameField, encryptedValues, UrlField, Keys);
-            Accounts.Add(account);
-            LoadInfoAsync(Accounts);
-            UsernameField = PasswordField = UrlField = null;
+            if (!isChanging)
+            {
+                int[] Keys = GenerateKeys(PasswordField.Length);
+                int[] encryptedValues = Encrypt(PasswordField, Keys);
+                AccountModel account = new AccountModel(UsernameField, encryptedValues, UrlField, Keys);
+                Accounts.Add(account);
+                LoadInfoAsync(Accounts);
+                UsernameField = PasswordField = UrlField = null;
+                isChanging = false;
+            }
+
+            else
+            {
+                SelectedAccount.Username = UsernameField;
+                SelectedAccount.Keys = GenerateKeys(PasswordField.Length);
+                SelectedAccount.Values = Encrypt(PasswordField, SelectedAccount.Keys);
+                SelectedAccount.Url = UrlField;
+                SelectedPassword = new string('●', SelectedAccount.Values.Length);
+                LoadInfoAsync(Accounts);
+                isChanging = false;
+            }
         }
 
-        public bool CanAddAccountCommandExecute(object p) => !Equals(UsernameField, null) && !Equals(PasswordField, null) && !Equals(UrlField, null); 
+        public bool CanAddAccountCommandExecute(object p) => !Equals(UsernameField, null) && !Equals(PasswordField, null) && !Equals(UrlField, null);
+
+        #endregion
+
+        #region CancelCommand
+
+        public ICommand CancelCommand { get; }
+
+        public void OnCancelCommandExecuted(object p)
+        {
+            isChanging = false;
+        }
+
+        public bool CanCancelCommandExecute(object p) => true;
 
         #endregion
 
@@ -128,6 +162,10 @@ namespace PasswordManager.ViewModels
 
         public void OnChangeAccountCommandExecuted(object p)
         {
+            UsernameField = SelectedAccount.Username;
+            PasswordField = Decrypt(SelectedAccount.Values, SelectedAccount.Keys);
+            UrlField = SelectedAccount.Url;
+            isChanging = true;
         }
 
         public bool CanChangeAccountCommandExecute(object p) => !Equals(SelectedAccount, null);
@@ -182,6 +220,52 @@ namespace PasswordManager.ViewModels
 
         #endregion
 
+        #region RevealPasswordCommand
+
+        public ICommand RevealPasswordCommand { get; }
+
+        public void OnRevealPasswordCommandExecuted(object p)
+        {
+            if (isRevealed)
+            {
+                SelectedPassword = new string('●', SelectedAccount.Values.Length);
+                isRevealed = false;
+            }
+            else
+            {
+                SelectedPassword = Decrypt(SelectedAccount.Values, SelectedAccount.Keys);
+                isRevealed = true;
+            }
+        }
+
+        public bool CanRevealPasswordCommandExecute(object p) => !Equals(SelectedAccount, null);
+
+        #endregion
+
+        #region CopyDataCommand
+
+        public ICommand CopyDataCommand { get; }
+
+        public void OnCopyDataCommandExecuted(object p)
+        {
+            if (Equals(p.ToString(), "Username"))
+            {
+                Clipboard.SetText(SelectedAccount.Username.ToString());
+            }
+            else if (Equals(p.ToString(), "Password"))
+            {
+                Clipboard.SetText(Decrypt(SelectedAccount.Values, SelectedAccount.Keys));
+            }
+            else if (Equals(p.ToString(), "Website"))
+            {
+                Clipboard.SetText(SelectedAccount.Url.ToString());
+            }
+        }
+
+        public bool CanCopyDataCommandExecute(object p) => !Equals(SelectedAccount, null);
+
+        #endregion
+
         #endregion
 
         public PasswordsViewModel()
@@ -190,6 +274,8 @@ namespace PasswordManager.ViewModels
 
             AddAccountCommand = new RelayCommand(OnAddAccountComandExecuted, CanAddAccountCommandExecute);
 
+            CancelCommand = new RelayCommand(OnCancelCommandExecuted, CanCancelCommandExecute);
+
             RemoveAccountCommand = new RelayCommand(OnRemoveAccountCommandExecuted, CanRemoveAccountCommandExecute);
 
             ChangeAccountCommand = new RelayCommand(OnChangeAccountCommandExecuted, CanChangeAccountCommandExecute);
@@ -197,6 +283,10 @@ namespace PasswordManager.ViewModels
             ImportDataCommand = new RelayCommand(OnImportDataCommandExecuted, CanImportDataCommandExecute);
 
             ExportDataCommand = new RelayCommand(OnExportDataCommandExecuted, CanExportDataCommandExecute);
+
+            RevealPasswordCommand = new RelayCommand(OnRevealPasswordCommandExecuted, CanRevealPasswordCommandExecute);
+
+            CopyDataCommand = new RelayCommand(OnCopyDataCommandExecuted, CanCopyDataCommandExecute);
 
             #endregion
 
@@ -215,7 +305,7 @@ namespace PasswordManager.ViewModels
                     {
                         accounts = System.Text.Json.JsonSerializer.Deserialize<ObservableCollection<AccountModel>>(fs);
                     }
-                    catch 
+                    catch
                     {
                         MessageBox.Show("Ошибка считывания данных!");
                     }
@@ -314,7 +404,7 @@ namespace PasswordManager.ViewModels
 
             int[] keys = new int[length];
 
-            for(int i = 0; i < keys.Length; i++)
+            for (int i = 0; i < keys.Length; i++)
             {
                 keys[i] = random.Next(1, 15);
             }
