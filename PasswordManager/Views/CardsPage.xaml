@@ -42,22 +42,37 @@
 
         <Button Style="{StaticResource BaseButtonStyle}" Content="&lt;&lt;" Grid.Row="0" Grid.Column="0" Margin="10" FontSize="20" FontFamily="{StaticResource AdditiveFont}"
             HorizontalAlignment="Left" Width="50" Click="Button_Click"/>
-        
+
         <StackPanel Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Grid.RowSpan="3" Margin="5">
             <StackPanel Margin="5">
                 <Label Content="Card number: " FontSize="24" Foreground="{StaticResource ForeColor}" Padding="5" Margin="10 0"/>
-                <TextBox Text="Number" FontSize="22" Foreground="{StaticResource ForeColor}" Margin="10" Padding="5" VerticalAlignment="Center"/>
+                <DockPanel>
+                    <Grid>
+                        <TextBox Style="{StaticResource MainTextBox}" FontSize="22" MinWidth="280" MaxWidth="280" Margin="10 10 0 10" Padding="5" VerticalAlignment="Center" IsReadOnly="True"/>
+                        <Button Style="{StaticResource AnimatedButtonStyle}" Command="{Binding RevealPasswordCommand}" Content="{StaticResource EyeImage1}" BorderThickness="0" Width="30" Height="30" HorizontalAlignment="Right" Margin="10"/>
+                    </Grid>
+                    <Button Command="{Binding CopyDataCommand}" CommandParameter="Username" Style="{StaticResource AnimatedCopyButtonStyle}" Content="{StaticResource CopyImage3}" BorderThickness="0" HorizontalAlignment="Right" Margin="5"/>
+                </DockPanel>
             </StackPanel>
 
             <DockPanel>
-                <StackPanel Margin="5">
+                <StackPanel Margin="5 5 0 5">
                     <Label Content="MM/YY: " FontSize="24" Foreground="{StaticResource ForeColor}" Padding="5" Margin="10 0"/>
-                    <TextBox Text="month/year" FontSize="22" Foreground="{StaticResource ForeColor}" Margin="10" Padding="5" VerticalAlignment="Center"/>
+                    <DockPanel>
+                        <Grid>
+                            <TextBox Style="{StaticResource MainTextBox}" Text="12/20" FontSize="22" MinWidth="115" MaxWidth="115"  Margin="10 10 0 10" Padding="5" VerticalAlignment="Center" IsReadOnly="True"/>
+                            <Button Style="{StaticResource AnimatedButtonStyle}" Command="{Binding RevealPasswordCommand}" Content="{StaticResource EyeImage2}" BorderThickness="0" Width="30" Height="30" HorizontalAlignment="Right" Margin="10"/>
+                        </Grid>
+                        <Button Command="{Binding CopyDataCommand}" CommandParameter="Username" Style="{StaticResource AnimatedCopyButtonStyle}" Content="{StaticResource CopyImage4}" BorderThickness="0" HorizontalAlignment="Right" Margin="5"/>
+                    </DockPanel>
                 </StackPanel>
 
-                <StackPanel Margin="5">
-                    <Label Content="CVV/CVC: " FontSize="24" Foreground="{StaticResource ForeColor}" Padding="5" Margin="10 0"/>
-                    <TextBox Text="###" FontSize="22" Foreground="{StaticResource ForeColor}" Margin="10" Padding="5" VerticalAlignment="Center"/>
+                <StackPanel Margin="5 5 0 5">
+                    <Label Content="CVV/CVC: " FontSize="24" Foreground="{StaticResource ForeColor}" Padding="5" Margin="5 0 10 0"/>
+                    <DockPanel>
+                        <TextBox Style="{StaticResource MainTextBox}" Text="###" FontSize="22" MinWidth="115" MaxWidth="115" Margin="5 10 0 10" Padding="5" VerticalAlignment="Center" IsReadOnly="True"/>
+                        <Button Command="{Binding CopyDataCommand}" CommandParameter="Username" Style="{StaticResource AnimatedCopyButtonStyle}" Content="{StaticResource CopyImage5}" BorderThickness="0" HorizontalAlignment="Right" Margin="5 5 7 5"/>
+                    </DockPanel>
                 </StackPanel>
             </DockPanel>
         </StackPanel>
