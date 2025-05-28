@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PasswordManager.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,11 @@ namespace PasswordManager.Views
     /// </summary>
     public partial class PasswordsPage : Page
     {
+        private readonly PasswordsViewModel _vm = PasswordsViewModel.Instance;
         public PasswordsPage()
         {
             InitializeComponent();
+            DataContext = _vm;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -33,6 +36,7 @@ namespace PasswordManager.Views
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new AddAccountPage());
+            _vm.UsernameField = _vm.PasswordField = _vm.UrlField = null;
         }
 
         private void ChangeButton_Click(object sender, RoutedEventArgs e)
