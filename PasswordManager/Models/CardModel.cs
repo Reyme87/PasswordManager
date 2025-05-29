@@ -5,14 +5,18 @@ namespace PasswordManager.Models
     class CardModel
     {
         private string? _number;
-        private string? _mmyy;
-        private int? _cvv;
+        private int[] _mYValues;
+        private int[] _cvvValues;
+        private int[] _mYKeys;
+        private int[] _cvvKeys;
 
-        public CardModel(string Number, string MmYy, int Cvv)
+        public CardModel(string Number, int[] MmYyValues, int[] CvvValues, int[] MmYyKeys, int[] CvvKeys)
         {
             _number = Number;
-            _mmyy = MmYy;
-            _cvv = Cvv;
+            _mYValues = MmYyValues;
+            _cvvValues = CvvValues;
+            _mYKeys = MmYyKeys;
+            _cvvKeys = CvvKeys;
         }
 
         public string? Number 
@@ -21,16 +25,28 @@ namespace PasswordManager.Models
             set => _number = value; 
         }
 
-        public string? MmYy 
-        { 
-            get => _mmyy; 
-            set => _mmyy = value; 
+        public int[] MYValues
+        {
+            get => _mYValues;
+            set => _mYValues = value;
         }
 
-        public int? Cvv
+        public int[] CvvValues
         {
-            get => _cvv;
-            set => _cvv = value;
+            get => _cvvValues;
+            set => _cvvValues = value;
+        }
+
+        public int[] MYKeys
+        {
+            get => _mYKeys;
+            set => _mYKeys = value;
+        }
+
+        public int[] CvvKeys
+        {
+            get => _cvvKeys;
+            set => _cvvKeys = value;
         }
     }
 }
