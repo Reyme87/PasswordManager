@@ -10,7 +10,7 @@
       Title="AddCardPage">
 
     <Page.DataContext>
-        <vm:PasswordsViewModel/>
+        <vm:CardsViewModel/>
     </Page.DataContext>
 
     <Page.Resources>
@@ -41,24 +41,24 @@
             <StackPanel Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Grid.RowSpan="3" Margin="5">
                 <StackPanel Margin="5">
                     <Label Content="Card number: " FontSize="24" Foreground="{StaticResource ForeColor}" Padding="5" Margin="10 0"/>
-                    <TextBox Style="{StaticResource AddTextBox}" Text="{Binding UsernameField}" FontSize="22" Margin="10" Padding="5" VerticalAlignment="Center"/>
+                    <TextBox Style="{StaticResource AddTextBox}" Text="{Binding CardNumberField, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="22" Margin="10" Padding="5" VerticalAlignment="Center"/>
                 </StackPanel>
 
                 <DockPanel>
                     <StackPanel Margin="5 5 0 5" HorizontalAlignment="Center">
                         <Label Content="MM/YY: " FontSize="24" Foreground="{StaticResource ForeColor}" Padding="5" Margin="10 0"/>
-                        <TextBox Style="{StaticResource AddTextBox}" Text="{Binding PasswordField}" Width="200" FontSize="22" Margin="10" Padding="5" VerticalAlignment="Center"/>
+                        <TextBox Style="{StaticResource AddTextBox}" Text="{Binding MMYYField, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:00/00}}" Width="200" FontSize="22" Margin="10" Padding="5" VerticalAlignment="Center"/>
                     </StackPanel>
 
                     <StackPanel Margin="0 5 5 5" HorizontalAlignment="Right">
                         <Label Content="CVV/CVC: " FontSize="24" Foreground="{StaticResource ForeColor}" Padding="5" Margin="10 0"/>
-                        <TextBox Style="{StaticResource AddTextBox}" Text="{Binding UrlField}" Width="200" FontSize="22" Margin="10" Padding="5" VerticalAlignment="Center"/>
+                        <TextBox Style="{StaticResource AddTextBox}" Text="{Binding CVVField, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:D3}}" Width="200" FontSize="22" Margin="10" Padding="5" VerticalAlignment="Center"/>
                     </StackPanel>
                 </DockPanel>
             </StackPanel>
         </Border>
 
-        <Button Command="{Binding AddAccountCommand}" Style="{StaticResource BaseButtonStyle}" Content="Save" Grid.Row="4" Grid.Column="1"  Margin="10" FontSize="20"/>
+        <Button Command="{Binding AddCardCommand}" Style="{StaticResource BaseButtonStyle}" Content="Save" Grid.Row="4" Grid.Column="1"  Margin="10" FontSize="20"/>
         <Button x:Name="CancelButton" Command="{Binding CancelCommand}" Style="{StaticResource BaseButtonStyle}" Content="Cancel" Grid.Row="4" Grid.Column="2"  Margin="10" FontSize="20" Click="CancelButton_Click"/>
     </Grid>
 </Page>
