@@ -140,6 +140,7 @@ namespace PasswordManager.ViewModels
         public void OnRemoveAccountCommandExecuted(object p)
         {
             Accounts.Remove(SelectedAccount);
+            SelectedPassword = null;
             LoadInfoAsync(Accounts);
         }
 
