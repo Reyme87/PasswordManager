@@ -22,6 +22,8 @@ namespace PasswordManager.ViewModels
         private string? _password;
         private string? _url;
         private string? _selectedPassword;
+        private string _searchText;
+        private string _infoText;
 
         public string? UsernameField
         {
@@ -59,6 +61,28 @@ namespace PasswordManager.ViewModels
             }
         }
 
+        public string SearchText
+        {
+            get => _searchText;
+            set
+            {
+                if (_searchText != value)
+                {
+                    Set(ref _searchText, value);
+                    FilterItems();
+                }
+            }
+        }
+
+        public string InfoText
+        {
+            get => _infoText;
+            set
+            {
+                Set(ref _infoText, value);
+            }
+        }
+
         private bool isRevealed = false;
         private bool isChanging = false;
 
@@ -66,7 +90,26 @@ namespace PasswordManager.ViewModels
 
         #region Коллекции элементов
 
-        public ObservableCollection<AccountModel> Accounts { get; set; }
+        private ObservableCollection<AccountModel> _accounts;
+        private ObservableCollection<AccountModel> _filteredItems;
+
+        public ObservableCollection<AccountModel> Accounts
+        {
+            get => _accounts;
+            set
+            {
+                Set(ref _accounts, value);
+            }
+        }
+
+        public ObservableCollection<AccountModel> FilteredItems
+        {
+            get => _filteredItems;
+            set
+            {
+                Set(ref _filteredItems, value);
+            }
+        }
 
         private AccountModel _selectedAccount;
 
@@ -99,6 +142,8 @@ namespace PasswordManager.ViewModels
                 int[] encryptedValues = Encrypt(PasswordField, Keys);
                 AccountModel account = new AccountModel(UsernameField, encryptedValues, UrlField, Keys);
                 Accounts.Add(account);
+                FilteredItems = Accounts;
+                SearchText = "";
                 LoadInfoAsync(Accounts);
                 UsernameField = PasswordField = UrlField = null;
                 isChanging = false;
@@ -111,6 +156,8 @@ namespace PasswordManager.ViewModels
                 SelectedAccount.Values = Encrypt(PasswordField, SelectedAccount.Keys);
                 SelectedAccount.Url = UrlField;
                 SelectedPassword = new string('●', SelectedAccount.Values.Length);
+                FilteredItems = Accounts;
+                SearchText = "";
                 LoadInfoAsync(Accounts);
                 isChanging = false;
             }
@@ -140,6 +187,7 @@ namespace PasswordManager.ViewModels
         public void OnRemoveAccountCommandExecuted(object p)
         {
             Accounts.Remove(SelectedAccount);
+            FilteredItems.Remove(SelectedAccount);
             SelectedPassword = null;
             LoadInfoAsync(Accounts);
         }
@@ -176,14 +224,22 @@ namespace PasswordManager.ViewModels
 
             if (dialog.ShowDialog() == true)
             {
-                string FileName = dialog.FileName;
+                try
+                {
+                    string FileName = dialog.FileName;
 
-                ObservableCollection<AccountModel> additionalAccounts = GetInfo(FileName);
+                    ObservableCollection<AccountModel> additionalAccounts = GetInfo(FileName);
 
-                var temp = Accounts.Union(additionalAccounts);
+                    var temp = Accounts.Union(additionalAccounts);
 
-                Accounts = temp.ToObservableCollection();
-                LoadInfoAsync(Accounts);
+                    Accounts = temp.ToObservableCollection();
+                    SearchText = "";
+                    LoadInfoAsync(Accounts);
+                }
+                catch
+                {
+                    MessageBox.Show("Error occured during data import!");
+                }
             }
         }
 
@@ -252,9 +308,24 @@ namespace PasswordManager.ViewModels
             {
                 Clipboard.SetText(SelectedAccount.Url.ToString());
             }
+
+            InfoText = $"{p.ToString()} copied";
         }
 
         public bool CanCopyDataCommandExecute(object p) => !Equals(SelectedAccount, null);
+
+        #endregion
+
+        #region ResetSearchCommand
+
+        public ICommand ResetSearchCommand { get; }
+
+        public void OnResetSearchCommandExecuted(object p)
+        {
+            SearchText = "";
+        }
+
+        public bool CanResetSearchCommandExecute(object p) => !Equals(SearchText, "") && !Equals(SearchText, null);
 
         #endregion
 
@@ -280,9 +351,12 @@ namespace PasswordManager.ViewModels
 
             CopyDataCommand = new RelayCommand(OnCopyDataCommandExecuted, CanCopyDataCommandExecute);
 
+            ResetSearchCommand = new RelayCommand(OnResetSearchCommandExecuted, CanResetSearchCommandExecute);
+
             #endregion
 
             Accounts = GetInfo("acc.json");
+            FilteredItems = Accounts;
         }
 
         private ObservableCollection<AccountModel> GetInfo(string fileName)
@@ -299,7 +373,7 @@ namespace PasswordManager.ViewModels
                     }
                     catch
                     {
-                        MessageBox.Show("Ошибка считывания данных!");
+                        MessageBox.Show("Error occured while reading the data!");
                     }
                 }
             }
@@ -402,6 +476,22 @@ namespace PasswordManager.ViewModels
             }
 
             return keys;
+        }
+
+        private void FilterItems()
+        {
+            if (string.IsNullOrWhiteSpace(SearchText))
+            {
+                FilteredItems = new ObservableCollection<AccountModel>(Accounts);
+            }
+            else
+            {
+                var filtered = Accounts.Where(item =>
+                    item.Url.Contains(SearchText, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+
+                FilteredItems = new ObservableCollection<AccountModel>(filtered);
+            }
         }
     }
 }
