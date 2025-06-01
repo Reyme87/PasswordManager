@@ -11,6 +11,7 @@ using PasswordManager.Models;
 using PasswordManager.ViewModels.Base;
 using System.Windows.Input;
 using PasswordManager.Commands;
+using Microsoft.Win32;
 
 namespace PasswordManager.ViewModels
 {
@@ -98,7 +99,15 @@ namespace PasswordManager.ViewModels
 
         #region Коллекции элементов
 
-        public ObservableCollection<CardModel> Cards { get; set; }
+        private ObservableCollection<CardModel> _cards;
+        public ObservableCollection<CardModel> Cards 
+        { 
+            get => _cards; 
+            set
+            {
+                Set(ref _cards, value);
+            }
+        }
 
         private CardModel _selectedCard;
 
@@ -213,6 +222,61 @@ namespace PasswordManager.ViewModels
 
         #endregion
 
+        #region ImportDataCommand
+
+        public ICommand ImportDataCommand { get; }
+
+        public void OnImportDataCommandExecuted(object p)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+
+            dialog.Filter = "Data file (*.json)|*.json";
+
+            if (dialog.ShowDialog() == true)
+            {
+                try
+                {
+                    string FileName = dialog.FileName;
+
+                    ObservableCollection<CardModel> additionalCards = GetInfo(FileName);
+
+                    var temp = Cards.Union(additionalCards);
+
+                    Cards = temp.ToObservableCollection();
+                    LoadInfoAsync(Cards);
+                }
+                catch
+                {
+                    MessageBox.Show("Error occured during data import!");
+                }
+            }
+        }
+
+        public bool CanImportDataCommandExecute(object p) => true;
+
+        #endregion
+
+        #region ExportDataCommand
+
+        public ICommand ExportDataCommand { get; }
+
+        public void OnExportDataCommandExecuted(object p)
+        {
+            SaveFileDialog dialog = new SaveFileDialog();
+
+            dialog.Filter = "Data file (*.json)|*.json";
+
+            if (dialog.ShowDialog() == true)
+            {
+                string FileName = dialog.FileName;
+                LoadInfoAsync(Cards, FileName);
+            }
+        }
+
+        public bool CanExportDataCommandExecute(object p) => !Equals(Cards, null);
+
+        #endregion
+
         #endregion
 
         public CardsViewModel()
@@ -226,6 +290,10 @@ namespace PasswordManager.ViewModels
             RemoveCardCommand = new RelayCommand(OnRemoveCardCommandExecuted, CanRemoveCardCommandExecute);
 
             ChangeCardCommand = new RelayCommand(OnChangeCardCommandExecuted, CanChangeCardCommandExecute);
+
+            ImportDataCommand = new RelayCommand(OnImportDataCommandExecuted, CanImportDataCommandExecute);
+
+            ExportDataCommand = new RelayCommand(OnExportDataCommandExecuted, CanExportDataCommandExecute);
 
             #endregion
 
@@ -247,7 +315,7 @@ namespace PasswordManager.ViewModels
                     }
                     catch
                     {
-                        MessageBox.Show("Ошибка считывания данных!");
+                        MessageBox.Show("Error occured while reading the data!");
                     }
                 }
             }
