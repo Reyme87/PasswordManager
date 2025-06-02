@@ -12,6 +12,7 @@ using PasswordManager.ViewModels.Base;
 using System.Windows.Input;
 using PasswordManager.Commands;
 using Microsoft.Win32;
+using System.Windows.Controls;
 
 namespace PasswordManager.ViewModels
 {
@@ -28,6 +29,7 @@ namespace PasswordManager.ViewModels
         private string _lastNumbers;
         private string _selectedCvv;
         private string _selectedNumber;
+        private string _infoText;
 
         public string CardNumberField
         {
@@ -92,7 +94,17 @@ namespace PasswordManager.ViewModels
             }
         }
 
-        private bool isRevealed = false;
+        public string InfoText
+        {
+            get => _infoText;
+            set
+            {
+                Set(ref _infoText, value);
+            }
+        }
+
+        private bool isRevealedNum = false;
+        private bool isRevealedCvv = false;
         private bool isChanging = false;
 
         #endregion
@@ -100,9 +112,9 @@ namespace PasswordManager.ViewModels
         #region Коллекции элементов
 
         private ObservableCollection<CardModel> _cards;
-        public ObservableCollection<CardModel> Cards 
-        { 
-            get => _cards; 
+        public ObservableCollection<CardModel> Cards
+        {
+            get => _cards;
             set
             {
                 Set(ref _cards, value);
@@ -110,6 +122,8 @@ namespace PasswordManager.ViewModels
         }
 
         private CardModel _selectedCard;
+        private Image _revealImgNum;
+        private Image _revealImgCvv;
 
         public CardModel SelectedCard
         {
@@ -123,6 +137,24 @@ namespace PasswordManager.ViewModels
                     SelectedNumber = new string('●', SelectedCard.NumberValues.Length - 4) + SelectedCard.LastNumbers;
                 }
 
+            }
+        }
+
+        public Image RevealImgNum
+        {
+            get => _revealImgNum;
+            set
+            {
+                Set(ref _revealImgNum, value);
+            }
+        }
+
+        public Image RevealImgCvv
+        {
+            get => _revealImgCvv;
+            set
+            {
+                Set(ref _revealImgCvv, value);
             }
         }
 
@@ -144,7 +176,7 @@ namespace PasswordManager.ViewModels
                 int[] encryptedNumberValues = Encrypt(cardNumberStr, NumberKeys);
                 int[] CVVKeys = GenerateKeys(cvvStr.Length);
                 int[] encryptedCVVValues = Encrypt(cvvStr, CVVKeys);
-                LastNumbers = cardNumberStr[11..15];
+                LastNumbers = cardNumberStr[12..16];
                 CardModel card = new CardModel(encryptedNumberValues, NumberKeys, MMYYField, encryptedCVVValues, CVVKeys, LastNumbers);
                 Cards.Add(card);
                 LoadInfoAsync(Cards);
@@ -164,9 +196,9 @@ namespace PasswordManager.ViewModels
                 SelectedCard.CvvKeys = GenerateKeys(cvvStr.Length);
                 SelectedCard.CvvValues = Encrypt(cvvStr, SelectedCard.CvvKeys);
                 SelectedCVV = new string('●', 3);
-                SelectedCard.LastNumbers = cardNumberStr[11..15];
+                LastNumbers = cardNumberStr[12..16];
+                SelectedCard.LastNumbers = LastNumbers;
                 SelectedNumber = new string('●', CardNumberField.ToString().Length - 4) + LastNumbers;
-                
                 LoadInfoAsync(Cards);
                 isChanging = false;
             }
@@ -277,6 +309,77 @@ namespace PasswordManager.ViewModels
 
         #endregion
 
+        #region RevealDataCommand
+
+        public ICommand RevealDataCommand { get; }
+
+        public void OnRevealDataCommandExecuted(object p)
+        {
+            switch (p.ToString())
+            {
+                case "Card number":
+                    if (isRevealedNum)
+                    {
+                        SelectedNumber = new string('●', SelectedCard.NumberValues.Length - 4) + SelectedCard.LastNumbers;
+                        RevealImgNum = (Image)Application.Current.FindResource("EyeImage1");
+                        isRevealedNum = false;
+                    }
+                    else
+                    {
+                        SelectedNumber = Decrypt(SelectedCard.NumberValues, SelectedCard.NumberKeys);
+                        RevealImgNum = (Image)Application.Current.FindResource("CrossedEyeImage1");
+                        isRevealedNum = true;
+                    }
+                    break;
+                case "CVV/CVC":
+                    if (isRevealedCvv)
+                    {
+                        SelectedCVV = new string('●', 3);
+                        RevealImgCvv = (Image)Application.Current.FindResource("EyeImage2");
+                        isRevealedCvv = false;
+                        
+                    }
+                    else
+                    {
+                        SelectedCVV = Decrypt(SelectedCard.CvvValues, SelectedCard.CvvKeys);
+                        RevealImgCvv = (Image)Application.Current.FindResource("CrossedEyeImage2");
+                        isRevealedCvv = true;
+                    }
+                    break;
+            }
+        }
+
+        public bool CanRevealDataCommandExecute(object p) => !Equals(SelectedCard, null);
+
+        #endregion
+
+        #region CopyDataCommand
+
+        public ICommand CopyDataCommand { get; }
+
+        public void OnCopyDataCommandExecuted(object p)
+        {
+            if (Equals(p.ToString(), "Card number"))
+            {
+                Clipboard.SetText(Decrypt(SelectedCard.NumberValues, SelectedCard.NumberKeys));
+            }
+            else if (Equals(p.ToString(), "MM/YY"))
+            {
+                var str = SelectedCard.MMYY.ToString("D4");
+                Clipboard.SetText(string.Format("{0:##/##}", str));
+            }
+            else if (Equals(p.ToString(), "CVV/CVC"))
+            {
+                Clipboard.SetText(Decrypt(SelectedCard.CvvValues, SelectedCard.CvvKeys));
+            }
+
+            InfoText = $"{p.ToString()} copied";
+        }
+
+        public bool CanCopyDataCommandExecute(object p) => !Equals(SelectedCard, null);
+
+        #endregion
+
         #endregion
 
         public CardsViewModel()
@@ -295,10 +398,15 @@ namespace PasswordManager.ViewModels
 
             ExportDataCommand = new RelayCommand(OnExportDataCommandExecuted, CanExportDataCommandExecute);
 
+            RevealDataCommand = new RelayCommand(OnRevealDataCommandExecuted, CanRevealDataCommandExecute);
+
+            CopyDataCommand = new RelayCommand(OnCopyDataCommandExecuted, CanCopyDataCommandExecute);
+
             #endregion
 
-            //MMYY = DateTime.Now.Month * 100 + DateTime.Now.Year % 1000;
             Cards = GetInfo("card.json");
+            RevealImgNum = (Image)Application.Current.FindResource("EyeImage1");
+            RevealImgCvv = (Image)Application.Current.FindResource("EyeImage2");
         }
 
         private ObservableCollection<CardModel> GetInfo(string fileName)
