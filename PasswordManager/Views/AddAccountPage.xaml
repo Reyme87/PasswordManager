@@ -41,17 +41,17 @@
             <StackPanel Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Grid.RowSpan="3" Margin="5">
                 <StackPanel Margin="5">
                     <Label Content="Username: " FontSize="24" Foreground="{StaticResource ForeColor}" Padding="5" Margin="10 0"/>
-                    <TextBox Style="{StaticResource AddTextBox}" Text="{Binding UsernameField}" FontSize="22" Margin="10" Padding="5" VerticalAlignment="Center"/>
+                    <TextBox Style="{StaticResource AddTextBox}" Text="{Binding UsernameField, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" FontSize="22" Margin="10" Padding="5" VerticalAlignment="Center"/>
                 </StackPanel>
 
                 <StackPanel Margin="5">
                     <Label Content="Password: " FontSize="24" Foreground="{StaticResource ForeColor}" Padding="5" Margin="10 0"/>
-                    <TextBox Style="{StaticResource AddTextBox}" Text="{Binding PasswordField}" FontSize="22" Margin="10" Padding="5" VerticalAlignment="Center"/>
+                    <TextBox Style="{StaticResource AddTextBox}" Text="{Binding PasswordField, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" FontSize="22" Margin="10" Padding="5" VerticalAlignment="Center"/>
                 </StackPanel>
 
                 <StackPanel Margin="5">
                     <Label Content="Website: " FontSize="24" Foreground="{StaticResource ForeColor}" Padding="5" Margin="10 0"/>
-                    <TextBox Style="{StaticResource AddTextBox}" Text="{Binding UrlField}" FontSize="22" Margin="10" Padding="5" VerticalAlignment="Center"/>
+                    <TextBox Style="{StaticResource AddTextBox}" Text="{Binding UrlField, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" FontSize="22" Margin="10" Padding="5" VerticalAlignment="Center"/>
                 </StackPanel>
             </StackPanel>
         </Border>
