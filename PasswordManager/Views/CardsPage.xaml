@@ -46,9 +46,9 @@
         <Button x:Name="AddButton" Style="{StaticResource BaseButtonStyle}" Content="Add" Grid.Row="4" Grid.Column="0" Margin="10" FontSize="20" Click="AddButton_Click"/>
         <Button Command="{Binding RemoveCardCommand}" Style="{StaticResource BaseButtonStyle}" Content="Remove" Grid.Row="4" Grid.Column="1" Margin="10" FontSize="20"/>
         <Button Command="{Binding ChangeCardCommand}" x:Name="ChangeButton" Style="{StaticResource BaseButtonStyle}" Content="Change" Grid.Row="4" Grid.Column="2" Margin="10" FontSize="20" Click="ChangeButton_Click"/>
-        <Button Style="{StaticResource BaseButtonStyle}" Content="Import" Grid.Row="4" Grid.Column="3" Margin="10" Width="100" FontSize="20"
+        <Button Command="{Binding ImportDataCommand}" Style="{StaticResource BaseButtonStyle}" Content="Import" Grid.Row="4" Grid.Column="3" Margin="10" Width="100" FontSize="20"
             HorizontalAlignment="Left"/>
-        <Button Style="{StaticResource BaseButtonStyle}" Content="Export" Grid.Row="4" Grid.Column="3" Margin="10" Width="100" FontSize="20"
+        <Button Command="{Binding ExportDataCommand}" Style="{StaticResource BaseButtonStyle}" Content="Export" Grid.Row="4" Grid.Column="3" Margin="10" Width="100" FontSize="20"
             HorizontalAlignment="Right"/>
 
         <Button Style="{StaticResource BaseButtonStyle}" Content="&lt;&lt;" Grid.Row="0" Grid.Column="0" Margin="10" FontSize="20" FontFamily="{StaticResource AdditiveFont}"
@@ -60,9 +60,9 @@
                 <DockPanel>
                     <Grid>
                         <TextBox Style="{StaticResource MainTextBox}" Text="{Binding SelectedNumber, StringFormat={}{0:0000 0000 0000 0000}}" FontSize="22" MinWidth="280" MaxWidth="280" Margin="10 10 0 10" Padding="5" VerticalAlignment="Center" IsReadOnly="True"/>
-                        <Button Style="{StaticResource AnimatedButtonStyle}" Command="{Binding RevealPasswordCommand}" Content="{StaticResource EyeImage1}" BorderThickness="0" Width="30" Height="30" HorizontalAlignment="Right" Margin="10"/>
+                        <Button Style="{StaticResource AnimatedButtonStyle}" Command="{Binding RevealDataCommand}" CommandParameter="Card number" Content="{Binding RevealImgNum}" BorderThickness="0" Width="30" Height="30" HorizontalAlignment="Right" Margin="10"/>
                     </Grid>
-                    <Button Command="{Binding CopyDataCommand}" CommandParameter="Username" Style="{StaticResource AnimatedCopyButtonStyle}" Content="{StaticResource CopyImage3}" BorderThickness="0" HorizontalAlignment="Right" Margin="5"/>
+                    <Button Command="{Binding CopyDataCommand}" CommandParameter="Card number" Style="{StaticResource AnimatedCopyButtonStyle}" Content="{StaticResource CopyImage3}" BorderThickness="0" HorizontalAlignment="Right" Margin="5" Click="CopyButton_Click"/>
                 </DockPanel>
             </StackPanel>
 
@@ -71,7 +71,7 @@
                     <Label Content="MM/YY: " FontSize="24" Foreground="{StaticResource ForeColor}" Padding="5" Margin="10 0"/>
                     <DockPanel>
                         <TextBox Style="{StaticResource MainTextBox}" Text="{Binding SelectedCard.MMYY, StringFormat={}{0:00/00}}" FontSize="22" MinWidth="115" MaxWidth="115"  Margin="10 10 0 10" Padding="5" VerticalAlignment="Center" IsReadOnly="True"/>
-                        <Button Command="{Binding CopyDataCommand}" CommandParameter="Username" Style="{StaticResource AnimatedCopyButtonStyle}" Content="{StaticResource CopyImage4}" BorderThickness="0" HorizontalAlignment="Right" Margin="5"/>
+                        <Button Command="{Binding CopyDataCommand}" CommandParameter="MM/YY" Style="{StaticResource AnimatedCopyButtonStyle}" Content="{StaticResource CopyImage4}" BorderThickness="0" HorizontalAlignment="Right" Margin="5" Click="CopyButton_Click"/>
                     </DockPanel>
                 </StackPanel>
 
@@ -80,12 +80,18 @@
                     <DockPanel>
                         <Grid>
                             <TextBox Style="{StaticResource MainTextBox}" Text="{Binding SelectedCVV, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:000}}" FontSize="22" MinWidth="115" MaxWidth="115" Margin="5 10 0 10" Padding="5" VerticalAlignment="Center" IsReadOnly="True"/>
-                            <Button Style="{StaticResource AnimatedButtonStyle}" Command="{Binding RevealPasswordCommand}" Content="{StaticResource EyeImage2}" BorderThickness="0" Width="30" Height="30" HorizontalAlignment="Right" Margin="10"/>
+                            <Button Style="{StaticResource AnimatedButtonStyle}" Command="{Binding RevealDataCommand}" CommandParameter="CVV/CVC" Content="{Binding RevealImgCvv}" BorderThickness="0" Width="30" Height="30" HorizontalAlignment="Right" Margin="10"/>
                         </Grid>
-                        <Button Command="{Binding CopyDataCommand}" CommandParameter="Username" Style="{StaticResource AnimatedCopyButtonStyle}" Content="{StaticResource CopyImage5}" BorderThickness="0" HorizontalAlignment="Right" Margin="5 5 7 5"/>
+                        <Button Command="{Binding CopyDataCommand}" CommandParameter="CVV/CVC" Style="{StaticResource AnimatedCopyButtonStyle}" Content="{StaticResource CopyImage5}" BorderThickness="0" HorizontalAlignment="Right" Margin="5 5 7 5" Click="CopyButton_Click"/>
                     </DockPanel>
                 </StackPanel>
             </DockPanel>
         </StackPanel>
+        
+        <Border x:Name="NotificationBorder" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" CornerRadius="10"
+            VerticalAlignment="Bottom" HorizontalAlignment="Center" Height="30" Margin="10"
+            Background="{StaticResource ForeColor}" Opacity="0">
+            <Label Content="{Binding InfoText}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="16"/>
+        </Border>
     </Grid>
 </Page>
