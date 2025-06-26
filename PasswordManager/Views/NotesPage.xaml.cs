@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PasswordManager.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,11 @@ namespace PasswordManager.Views
     /// </summary>
     public partial class NotesPage : Page
     {
+        private readonly NotesViewModel _vm = NotesViewModel.Instance;
         public NotesPage()
         {
             InitializeComponent();
+            DataContext = _vm;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

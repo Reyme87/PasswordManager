@@ -4,10 +4,15 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:PasswordManager.Views"
+      xmlns:vm="clr-namespace:PasswordManager.ViewModels"
       mc:Ignorable="d" 
       d:DesignHeight="500" d:DesignWidth="600" FontFamily="{StaticResource MainFont}"
       Title="NotesPage">
 
+    <Page.DataContext>
+        <vm:NotesViewModel/>
+    </Page.DataContext>
+    
     <Page.Resources>
         <ResourceDictionary Source="ResourceDictionary.xaml"/>
     </Page.Resources>
@@ -46,11 +51,11 @@
         <StackPanel Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Grid.RowSpan="3" Margin="5">
             <StackPanel Margin="5">
                 <Label Content="Name: " FontSize="24" Foreground="{StaticResource ForeColor}" Padding="5" Margin="10 0"/>
-                <TextBox Text="TEXT" FontSize="22" Margin="10" Padding="5" VerticalAlignment="Center"/>
+                <TextBox Style="{StaticResource MainTextBox}" Text="{Binding SelectedNote}" FontSize="22" Margin="10" Padding="5" VerticalAlignment="Center"/>
             </StackPanel>
 
             <StackPanel Margin="5">
-                <TextBox Text="###" FontSize="22" Margin="10" Padding="5" TextWrapping="Wrap" AcceptsReturn="True" MaxHeight="200" VerticalAlignment="Stretch"/>
+                <TextBox Style="{StaticResource MainTextBox}" Text="###" FontSize="22" Margin="10" Padding="5" TextWrapping="Wrap" AcceptsReturn="True" Height="200" MaxHeight="200" VerticalContentAlignment="Top" VerticalAlignment="Stretch"/>
             </StackPanel>
         </StackPanel>
     </Grid>
