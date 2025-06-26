@@ -183,7 +183,7 @@ namespace PasswordManager.ViewModels
                 LastNumbers = cardNumberStr[12..16];
                 CardModel card = new CardModel(encryptedNumberValues, NumberKeys, MMYYField, encryptedCVVValues, CVVKeys, LastNumbers);
                 Cards.Add(card);
-                LoadInfoAsync(Cards);
+                JsonController<CardModel>.LoadInfoAsync(Cards, "card.json");
                 CardNumberField = "0000000000000000";
                 MMYYField = 0000;
                 CVVField = 0;
@@ -203,7 +203,7 @@ namespace PasswordManager.ViewModels
                 LastNumbers = cardNumberStr[12..16];
                 SelectedCard.LastNumbers = LastNumbers;
                 SelectedNumber = new string('●', CardNumberField.ToString().Length - 4) + LastNumbers;
-                LoadInfoAsync(Cards);
+                JsonController<CardModel>.LoadInfoAsync(Cards, "card.json");
                 isChanging = false;
             }
         }
@@ -234,7 +234,7 @@ namespace PasswordManager.ViewModels
             Cards.Remove(SelectedCard);
             SelectedCVV = null;
             SelectedNumber = null;
-            LoadInfoAsync(Cards);
+            JsonController<CardModel>.LoadInfoAsync(Cards, "card.json");
         }
 
         public bool CanRemoveCardCommandExecute(object p) => !Equals(SelectedCard, null);
@@ -274,12 +274,12 @@ namespace PasswordManager.ViewModels
                 {
                     string FileName = dialog.FileName;
 
-                    ObservableCollection<CardModel> additionalCards = GetInfo(FileName);
+                    ObservableCollection<CardModel> additionalCards = JsonController<CardModel>.GetInfo(FileName);
 
                     var temp = Cards.Union(additionalCards);
 
                     Cards = temp.ToObservableCollection();
-                    LoadInfoAsync(Cards);
+                    JsonController<CardModel>.LoadInfoAsync(Cards, "card.json");
                 }
                 catch
                 {
@@ -305,7 +305,7 @@ namespace PasswordManager.ViewModels
             if (dialog.ShowDialog() == true)
             {
                 string FileName = dialog.FileName;
-                LoadInfoAsync(Cards, FileName);
+                JsonController<CardModel>.LoadInfoAsync(Cards, FileName);
             }
         }
 
@@ -341,7 +341,7 @@ namespace PasswordManager.ViewModels
                         SelectedCVV = new string('●', 3);
                         RevealImgCvv = (Image)Application.Current.FindResource("EyeImage2");
                         isRevealedCvv = false;
-                        
+
                     }
                     else
                     {
@@ -409,36 +409,9 @@ namespace PasswordManager.ViewModels
 
             #endregion
 
-            Cards = GetInfo("card.json");
+            Cards = JsonController<CardModel>.GetInfo("card.json");
             RevealImgNum = (Image)Application.Current.FindResource("EyeImage1");
             RevealImgCvv = (Image)Application.Current.FindResource("EyeImage2");
-        }
-
-        private ObservableCollection<CardModel> GetInfo(string fileName)
-        {
-            ObservableCollection<CardModel> cards = new ObservableCollection<CardModel>();
-            using (FileStream fs = new FileStream(fileName, FileMode.OpenOrCreate))
-            {
-                FileInfo fileInfo = new FileInfo(fileName);
-                if (fileInfo.Length != 0)
-                {
-                    try
-                    {
-                        cards = System.Text.Json.JsonSerializer.Deserialize<ObservableCollection<CardModel>>(fs);
-                    }
-                    catch
-                    {
-                        MessageBox.Show("Error occured while reading the data!");
-                    }
-                }
-            }
-            return cards;
-        }
-
-        private async void LoadInfoAsync(ObservableCollection<CardModel> cards, string fileName = "card.json")
-        {
-            string json = JsonConvert.SerializeObject(cards, Formatting.Indented);
-            await File.WriteAllTextAsync(fileName, json);
         }
 
         private int[] Encrypt(string number, int[] keys)

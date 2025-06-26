@@ -158,7 +158,7 @@ namespace PasswordManager.ViewModels
                 Accounts.Add(account);
                 FilteredItems = Accounts;
                 SearchText = "";
-                LoadInfoAsync(Accounts);
+                JsonController<AccountModel>.LoadInfoAsync(Accounts, "acc.json");
                 UsernameField = PasswordField = UrlField = null;
                 isChanging = false;
             }
@@ -172,7 +172,7 @@ namespace PasswordManager.ViewModels
                 SelectedPassword = new string('●', SelectedAccount.Values.Length);
                 FilteredItems = Accounts;
                 SearchText = "";
-                LoadInfoAsync(Accounts);
+                JsonController<AccountModel>.LoadInfoAsync(Accounts, "acc.json");
                 isChanging = false;
             }
         }
@@ -203,7 +203,7 @@ namespace PasswordManager.ViewModels
             Accounts.Remove(SelectedAccount);
             FilteredItems.Remove(SelectedAccount);
             SelectedPassword = null;
-            LoadInfoAsync(Accounts);
+            JsonController<AccountModel>.LoadInfoAsync(Accounts, "acc.json");
         }
 
         public bool CanRemoveAccountCommandExecute(object p) => !Equals(SelectedAccount, null);
@@ -242,13 +242,13 @@ namespace PasswordManager.ViewModels
                 {
                     string FileName = dialog.FileName;
 
-                    ObservableCollection<AccountModel> additionalAccounts = GetInfo(FileName);
+                    ObservableCollection<AccountModel> additionalAccounts = JsonController<AccountModel>.GetInfo(FileName);
 
                     var temp = Accounts.Union(additionalAccounts);
 
                     Accounts = temp.ToObservableCollection();
                     SearchText = "";
-                    LoadInfoAsync(Accounts);
+                    JsonController<AccountModel>.LoadInfoAsync(Accounts, "acc.json");
                 }
                 catch
                 {
@@ -274,7 +274,7 @@ namespace PasswordManager.ViewModels
             if (dialog.ShowDialog() == true)
             {
                 string FileName = dialog.FileName;
-                LoadInfoAsync(Accounts, FileName);
+                JsonController<AccountModel>.LoadInfoAsync(Accounts, FileName);
             }
         }
 
@@ -371,36 +371,9 @@ namespace PasswordManager.ViewModels
 
             #endregion
 
-            Accounts = GetInfo("acc.json");
+            Accounts = JsonController<AccountModel>.GetInfo("acc.json");
             FilteredItems = Accounts;
             RevealImg = (Image)Application.Current.FindResource("EyeImage");
-        }
-
-        private ObservableCollection<AccountModel> GetInfo(string fileName)
-        {
-            ObservableCollection<AccountModel> accounts = null;
-            using (FileStream fs = new FileStream(fileName, FileMode.OpenOrCreate))
-            {
-                FileInfo fileInfo = new FileInfo(fileName);
-                if (fileInfo.Length != 0)
-                {
-                    try
-                    {
-                        accounts = System.Text.Json.JsonSerializer.Deserialize<ObservableCollection<AccountModel>>(fs);
-                    }
-                    catch
-                    {
-                        MessageBox.Show("Error occured while reading the data!");
-                    }
-                }
-            }
-            return accounts;
-        }
-
-        private async void LoadInfoAsync(ObservableCollection<AccountModel> accounts, string fileName = "acc.json")
-        {
-            string json = JsonConvert.SerializeObject(accounts, Formatting.Indented);
-            await File.WriteAllTextAsync(fileName, json);
         }
 
         private int[] Encrypt(string password, int[] keys)
