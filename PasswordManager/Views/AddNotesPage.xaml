@@ -45,7 +45,7 @@
                 </StackPanel>
 
                 <StackPanel Margin="5">
-                    <TextBox Style="{StaticResource AddTextBox}" Text="{Binding TextField, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="22" Margin="10" Padding="5" TextWrapping="Wrap" AcceptsReturn="True" Height="200" MaxHeight="200" VerticalContentAlignment="Top" VerticalAlignment="Stretch"/>
+                    <TextBox Style="{StaticResource AddTextBox}" Text="{Binding TextField, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="22" Margin="10" Padding="5" TextWrapping="Wrap" AcceptsReturn="True" Height="180" MaxHeight="180" VerticalContentAlignment="Top" VerticalAlignment="Stretch"/>
                 </StackPanel>
             </StackPanel>
         </Border>
