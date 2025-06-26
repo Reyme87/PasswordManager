@@ -2,7 +2,9 @@
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using PasswordManager.Commands;
@@ -112,6 +114,7 @@ namespace PasswordManager.ViewModels
         }
 
         private AccountModel _selectedAccount;
+        private Image _revealImg;
 
         public AccountModel SelectedAccount
         {
@@ -122,7 +125,18 @@ namespace PasswordManager.ViewModels
                 if (_selectedAccount != null)
                 {
                     SelectedPassword = new string('●', SelectedAccount.Values.Length);
+                    RevealImg = (Image)Application.Current.FindResource("EyeImage");
+                    isRevealed = false;
                 }
+            }
+        }
+
+        public Image RevealImg
+        {
+            get => _revealImg;
+            set
+            {
+                Set(ref _revealImg, value);
             }
         }
 
@@ -277,11 +291,13 @@ namespace PasswordManager.ViewModels
             if (isRevealed)
             {
                 SelectedPassword = new string('●', SelectedAccount.Values.Length);
+                RevealImg = (Image)Application.Current.FindResource("EyeImage");
                 isRevealed = false;
             }
             else
             {
                 SelectedPassword = Decrypt(SelectedAccount.Values, SelectedAccount.Keys);
+                RevealImg = (Image)Application.Current.FindResource("CrossedEyeImage");
                 isRevealed = true;
             }
         }
@@ -357,6 +373,7 @@ namespace PasswordManager.ViewModels
 
             Accounts = GetInfo("acc.json");
             FilteredItems = Accounts;
+            RevealImg = (Image)Application.Current.FindResource("EyeImage");
         }
 
         private ObservableCollection<AccountModel> GetInfo(string fileName)

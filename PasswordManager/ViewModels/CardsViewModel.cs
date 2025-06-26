@@ -135,6 +135,10 @@ namespace PasswordManager.ViewModels
                 {
                     SelectedCVV = new string('●', 3);
                     SelectedNumber = new string('●', SelectedCard.NumberValues.Length - 4) + SelectedCard.LastNumbers;
+                    RevealImgNum = (Image)Application.Current.FindResource("EyeImage1");
+                    RevealImgCvv = (Image)Application.Current.FindResource("EyeImage2");
+                    isRevealedNum = false;
+                    isRevealedCvv = false;
                 }
 
             }
@@ -341,7 +345,8 @@ namespace PasswordManager.ViewModels
                     }
                     else
                     {
-                        SelectedCVV = Decrypt(SelectedCard.CvvValues, SelectedCard.CvvKeys);
+                        string cvv = Decrypt(SelectedCard.CvvValues, SelectedCard.CvvKeys);
+                        SelectedCVV = new string('0', 3 - cvv.Length) + cvv;
                         RevealImgCvv = (Image)Application.Current.FindResource("CrossedEyeImage2");
                         isRevealedCvv = true;
                     }
