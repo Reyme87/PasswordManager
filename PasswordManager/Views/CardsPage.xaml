@@ -8,7 +8,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="500" d:DesignWidth="600" FontFamily="{StaticResource MainFont}"
       Title="CardsPage">
-
+      
     <Page.DataContext>
         <vm:CardsViewModel/>
     </Page.DataContext>
@@ -62,7 +62,7 @@
                         <TextBox Style="{StaticResource MainTextBox}" Text="{Binding SelectedNumber, StringFormat={}{0:0000 0000 0000 0000}}" FontSize="22" MinWidth="280" MaxWidth="280" Margin="10 10 0 10" Padding="5" VerticalAlignment="Center" IsReadOnly="True"/>
                         <Button Style="{StaticResource AnimatedButtonStyle}" Command="{Binding RevealDataCommand}" CommandParameter="Card number" Content="{Binding RevealImgNum}" BorderThickness="0" Width="30" Height="30" HorizontalAlignment="Right" Margin="10"/>
                     </Grid>
-                    <Button Command="{Binding CopyDataCommand}" CommandParameter="Card number" Style="{StaticResource AnimatedCopyButtonStyle}" Content="{StaticResource CopyImage3}" BorderThickness="0" HorizontalAlignment="Right" Margin="5" Click="CopyButton_Click"/>
+                    <Button Command="{Binding CopyDataCommand}" CommandParameter="Card number" Style="{StaticResource AnimatedCopyButtonStyle}" Content="{StaticResource CopyImage}" BorderThickness="0" HorizontalAlignment="Right" Click="CopyButton_Click"/>
                 </DockPanel>
             </StackPanel>
 
@@ -71,7 +71,7 @@
                     <Label Content="MM/YY: " FontSize="24" Foreground="{StaticResource ForeColor}" Padding="5" Margin="10 0"/>
                     <DockPanel>
                         <TextBox Style="{StaticResource MainTextBox}" Text="{Binding SelectedCard.MMYY, StringFormat={}{0:00/00}}" FontSize="22" MinWidth="115" MaxWidth="115"  Margin="10 10 0 10" Padding="5" VerticalAlignment="Center" IsReadOnly="True"/>
-                        <Button Command="{Binding CopyDataCommand}" CommandParameter="MM/YY" Style="{StaticResource AnimatedCopyButtonStyle}" Content="{StaticResource CopyImage4}" BorderThickness="0" HorizontalAlignment="Right" Margin="5" Click="CopyButton_Click"/>
+                        <Button Command="{Binding CopyDataCommand}" CommandParameter="MM/YY" Style="{StaticResource AnimatedCopyButtonStyle}" Content="{StaticResource CopyImage}" BorderThickness="0" HorizontalAlignment="Right" Margin="5" Click="CopyButton_Click"/>
                     </DockPanel>
                 </StackPanel>
 
@@ -82,7 +82,7 @@
                             <TextBox Style="{StaticResource MainTextBox}" Text="{Binding SelectedCVV, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:000}}" FontSize="22" MinWidth="115" MaxWidth="115" Margin="5 10 0 10" Padding="5" VerticalAlignment="Center" IsReadOnly="True"/>
                             <Button Style="{StaticResource AnimatedButtonStyle}" Command="{Binding RevealDataCommand}" CommandParameter="CVV/CVC" Content="{Binding RevealImgCvv}" BorderThickness="0" Width="30" Height="30" HorizontalAlignment="Right" Margin="10"/>
                         </Grid>
-                        <Button Command="{Binding CopyDataCommand}" CommandParameter="CVV/CVC" Style="{StaticResource AnimatedCopyButtonStyle}" Content="{StaticResource CopyImage5}" BorderThickness="0" HorizontalAlignment="Right" Margin="5 5 7 5" Click="CopyButton_Click"/>
+                        <Button Command="{Binding CopyDataCommand}" CommandParameter="CVV/CVC" Style="{StaticResource AnimatedCopyButtonStyle}" Content="{StaticResource CopyImage}" BorderThickness="0" HorizontalAlignment="Right" Margin="5 5 7 5" Click="CopyButton_Click"/>
                     </DockPanel>
                 </StackPanel>
             </DockPanel>

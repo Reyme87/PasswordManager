@@ -21,16 +21,11 @@
     <Color x:Key="ControlsAnimationColor">#026956</Color>
     <Color x:Key="AlterPressAnimationColor">#7D7B79</Color>
     <Color x:Key="AlterControlsAnimationColor">#2B2A30</Color>
-    
-    <Image x:Key="CopyImage" Source="/Resources/copy.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
-    <Image x:Key="CopyImage1" Source="/Resources/copy.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
-    <Image x:Key="CopyImage2" Source="/Resources/copy.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
-    <Image x:Key="CopyImage3" Source="/Resources/copy.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
-    <Image x:Key="CopyImage4" Source="/Resources/copy.png" Width="25" RenderOptions.BitmapScalingMode="HighQuality"></Image>
-    <Image x:Key="CopyImage5" Source="/Resources/copy.png" Width="25" RenderOptions.BitmapScalingMode="HighQuality"></Image>
-    <Image x:Key="EyeImage" Source="/Resources/eye.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
-    <Image x:Key="EyeImage1" Source="/Resources/eye.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
-    <Image x:Key="EyeImage2" Source="/Resources/eye.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
+
+    <Image x:Key="CopyImage" x:Shared="false" Width="25" Source="/Resources/copy.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
+    <Image x:Key="EyeImage" x:Shared="false" Source="/Resources/eye.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
+    <Image x:Key="SearchImage" Source="/Resources/search.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
+    <Image x:Key="CrossedEyeImage" x:Shared="false" Source="/Resources/eye-crossed.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
 
     <Style x:Key="BaseButtonStyle" TargetType="{x:Type Button}">
         <Setter Property="Background" Value="{StaticResource ControlsColor}"/>
