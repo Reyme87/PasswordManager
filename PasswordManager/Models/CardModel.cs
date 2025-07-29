@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Security.Policy;
+using System.Windows.Controls;
 
 namespace PasswordManager.Models
 {
@@ -11,8 +12,9 @@ namespace PasswordManager.Models
         private int[] _cvvValues;
         private int[] _cvvKeys;
         private string _lastNumbers;
+        private string _iconPath;
 
-        public CardModel(int[] NumberValues, int[] NumberKeys, int MmYy, int[] CvvValues, int[] CvvKeys, string LastNumbers)
+        public CardModel(int[] NumberValues, int[] NumberKeys, int MmYy, int[] CvvValues, int[] CvvKeys, string LastNumbers, string IconPath)
         {
             _numberValues = NumberValues;
             _numberKeys = NumberKeys;
@@ -20,6 +22,7 @@ namespace PasswordManager.Models
             _cvvValues = CvvValues;
             _cvvKeys = CvvKeys;
             _lastNumbers = LastNumbers;
+            _iconPath = IconPath;
         }
 
         public int[] NumberValues
@@ -56,6 +59,12 @@ namespace PasswordManager.Models
         {
             get => _lastNumbers;
             set => _lastNumbers = value;
+        }
+
+        public string IconPath
+        {
+            get => _iconPath;
+            set => _iconPath = value;
         }
 
         public override bool Equals(object? obj)
