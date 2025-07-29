@@ -26,6 +26,11 @@
     <Image x:Key="EyeImage" x:Shared="false" Source="/Resources/eye.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
     <Image x:Key="SearchImage" Source="/Resources/search.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
     <Image x:Key="CrossedEyeImage" x:Shared="false" Source="/Resources/eye-crossed.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
+    <!--<Image x:Key="CardImage" x:Shared="false" Source="/Resources/Card.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>-->
+    <BitmapImage x:Key="CardImage" UriSource="/PasswordManager;component/Resources/Card.png"/>
+    <BitmapImage x:Key="VisaImage" UriSource="/PasswordManager;component/Resources/Visa.png"/>
+    <BitmapImage x:Key="MirImage" UriSource="/PasswordManager;component/Resources/Mir.png"/>
+    <BitmapImage x:Key="MasterCardImage" UriSource="/PasswordManager;component/Resources/MasterCard.png"/>
 
     <Style x:Key="BaseButtonStyle" TargetType="{x:Type Button}">
         <Setter Property="Background" Value="{StaticResource ControlsColor}"/>
