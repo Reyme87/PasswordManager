@@ -13,6 +13,7 @@ using System.Windows.Input;
 using PasswordManager.Commands;
 using Microsoft.Win32;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 
 namespace PasswordManager.ViewModels
 {
@@ -48,10 +49,10 @@ namespace PasswordManager.ViewModels
             get => _mmyy;
             set
             {
-                if (value >= 100 && value < 1300 && value.ToString().Length <= 4)
+                if (IsDigitsOnly(value.ToString()) && value < 1300)
                 {
                     Set(ref _mmyy, value);
-                }
+                } 
             }
         }
 
@@ -135,8 +136,8 @@ namespace PasswordManager.ViewModels
                 {
                     SelectedCVV = new string('●', 3);
                     SelectedNumber = new string('●', SelectedCard.NumberValues.Length - 4) + SelectedCard.LastNumbers;
-                    RevealImgNum = (Image)Application.Current.FindResource("EyeImage1");
-                    RevealImgCvv = (Image)Application.Current.FindResource("EyeImage2");
+                    RevealImgNum = (Image)Application.Current.FindResource("EyeImage");
+                    RevealImgCvv = (Image)Application.Current.FindResource("EyeImage");
                     isRevealedNum = false;
                     isRevealedCvv = false;
                 }
@@ -181,7 +182,24 @@ namespace PasswordManager.ViewModels
                 int[] CVVKeys = GenerateKeys(cvvStr.Length);
                 int[] encryptedCVVValues = Encrypt(cvvStr, CVVKeys);
                 LastNumbers = cardNumberStr[12..16];
-                CardModel card = new CardModel(encryptedNumberValues, NumberKeys, MMYYField, encryptedCVVValues, CVVKeys, LastNumbers);
+
+                BitmapImage img;
+                switch(cardNumberStr[0])
+                {
+                    case '2':
+                        img = (BitmapImage)Application.Current.FindResource("MirImage");
+                        break;
+                    case '4':
+                        img = (BitmapImage)Application.Current.FindResource("VisaImage");
+                        break;
+                    case '5':
+                        img = (BitmapImage)Application.Current.FindResource("MasterCardImage");
+                        break;
+                    default:
+                        img = (BitmapImage)Application.Current.FindResource("CardImage");
+                        break;
+                }
+                CardModel card = new CardModel(encryptedNumberValues, NumberKeys, MMYYField, encryptedCVVValues, CVVKeys, LastNumbers, img.UriSource.ToString());
                 Cards.Add(card);
                 JsonController<CardModel>.LoadInfoAsync(Cards, "card.json");
                 CardNumberField = "0000000000000000";
@@ -325,13 +343,13 @@ namespace PasswordManager.ViewModels
                     if (isRevealedNum)
                     {
                         SelectedNumber = new string('●', SelectedCard.NumberValues.Length - 4) + SelectedCard.LastNumbers;
-                        RevealImgNum = (Image)Application.Current.FindResource("EyeImage1");
+                        RevealImgNum = (Image)Application.Current.FindResource("EyeImage");
                         isRevealedNum = false;
                     }
                     else
                     {
                         SelectedNumber = Decrypt(SelectedCard.NumberValues, SelectedCard.NumberKeys);
-                        RevealImgNum = (Image)Application.Current.FindResource("CrossedEyeImage1");
+                        RevealImgNum = (Image)Application.Current.FindResource("CrossedEyeImage");
                         isRevealedNum = true;
                     }
                     break;
@@ -339,7 +357,7 @@ namespace PasswordManager.ViewModels
                     if (isRevealedCvv)
                     {
                         SelectedCVV = new string('●', 3);
-                        RevealImgCvv = (Image)Application.Current.FindResource("EyeImage2");
+                        RevealImgCvv = (Image)Application.Current.FindResource("EyeImage");
                         isRevealedCvv = false;
 
                     }
@@ -347,7 +365,7 @@ namespace PasswordManager.ViewModels
                     {
                         string cvv = Decrypt(SelectedCard.CvvValues, SelectedCard.CvvKeys);
                         SelectedCVV = new string('0', 3 - cvv.Length) + cvv;
-                        RevealImgCvv = (Image)Application.Current.FindResource("CrossedEyeImage2");
+                        RevealImgCvv = (Image)Application.Current.FindResource("CrossedEyeImage");
                         isRevealedCvv = true;
                     }
                     break;
@@ -410,8 +428,8 @@ namespace PasswordManager.ViewModels
             #endregion
 
             Cards = JsonController<CardModel>.GetInfo("card.json");
-            RevealImgNum = (Image)Application.Current.FindResource("EyeImage1");
-            RevealImgCvv = (Image)Application.Current.FindResource("EyeImage2");
+            RevealImgNum = (Image)Application.Current.FindResource("EyeImage");
+            RevealImgCvv = (Image)Application.Current.FindResource("EyeImage");
         }
 
         private int[] Encrypt(string number, int[] keys)

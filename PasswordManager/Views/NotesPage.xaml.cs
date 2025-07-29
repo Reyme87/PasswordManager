@@ -37,5 +37,10 @@ namespace PasswordManager.Views
         {
             NavigationService.Navigate(new AddNotesPage());
         }
+
+        private void ChangeButton_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new AddNotesPage());
+        }
     }
 }

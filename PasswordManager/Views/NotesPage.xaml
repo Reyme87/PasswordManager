@@ -45,7 +45,7 @@
 
         <Button x:Name="AddButton" Style="{StaticResource BaseButtonStyle}" Content="Add" Grid.Row="4" Grid.Column="0" Margin="10" FontSize="20" Click="AddButton_Click"/>
         <Button Command="{Binding RemoveNoteCommand}" Style="{StaticResource BaseButtonStyle}" Content="Remove" Grid.Row="4" Grid.Column="1" Margin="10" FontSize="20"/>
-        <Button Command="{Binding ChangeNoteCommand}" Style="{StaticResource BaseButtonStyle}" Content="Change" Grid.Row="4" Grid.Column="2" Margin="10" FontSize="20"/>
+        <Button Command="{Binding ChangeNoteCommand}" x:Name="ChangeButton" Style="{StaticResource BaseButtonStyle}" Content="Change" Grid.Row="4" Grid.Column="2" Margin="10" FontSize="20" Click="ChangeButton_Click"/>
         <Button Command="{Binding ImportDataCommand}" Style="{StaticResource BaseButtonStyle}" Content="Import" Grid.Row="4" Grid.Column="3" Margin="10" Width="100" FontSize="20"
                 HorizontalAlignment="Left"/>
         <Button Command="{Binding ExportDataCommand}" Style="{StaticResource BaseButtonStyle}" Content="Export" Grid.Row="4" Grid.Column="3" Margin="10" Width="100" FontSize="20"

@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:PasswordManager.Views"
       xmlns:vm="clr-namespace:PasswordManager.ViewModels"
+      xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
       mc:Ignorable="d" 
       d:DesignHeight="500" d:DesignWidth="600" FontFamily="{StaticResource MainFont}"
       Title="CardsPage">
@@ -38,7 +39,12 @@
         <ListBox ItemsSource="{Binding Cards, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" SelectedItem="{Binding SelectedCard}" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="3" Margin="5" FontSize="18">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Label Content="{Binding LastNumbers}" FontSize="22" Foreground="{StaticResource ForeColor}"/>
+                    <DockPanel>
+                        <Border HorizontalAlignment="Left" Width="40" Height="30" CornerRadius="10" Background="{StaticResource BackColor}" Margin="5 0">
+                            <Image Source="{Binding IconPath}" HorizontalAlignment="Center" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Border>
+                        <Label Content="{Binding LastNumbers}" FontSize="22" Foreground="{StaticResource ForeColor}"/>
+                    </DockPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
