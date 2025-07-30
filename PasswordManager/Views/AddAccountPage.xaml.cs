@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PasswordManager.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,10 +10,10 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using PasswordManager.ViewModels;
 
 namespace PasswordManager.Views
 {
@@ -31,6 +32,17 @@ namespace PasswordManager.Views
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new PasswordsPage());
+        }
+
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            DoubleAnimation anim = new DoubleAnimation();
+            anim.From = 0;
+            anim.To = 3;
+            anim.AutoReverse = true;
+            anim.Duration = TimeSpan.FromSeconds(1.5);
+            anim.EasingFunction = new QuadraticEase();
+            NotificationBorder.BeginAnimation(OpacityProperty, anim);
         }
     }
 }

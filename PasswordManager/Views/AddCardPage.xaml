@@ -60,7 +60,13 @@
             </StackPanel>
         </Border>
 
-        <Button Command="{Binding AddCardCommand}" Style="{StaticResource BaseButtonStyle}" Content="Save" Grid.Row="4" Grid.Column="1"  Margin="10" FontSize="20"/>
+        <Border x:Name="NotificationBorder" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" CornerRadius="10"
+                VerticalAlignment="Bottom" HorizontalAlignment="Center" Height="30" Margin="15"
+                Background="{StaticResource BackColor}" Opacity="0">
+            <Label Content="Payment method has been saved" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{StaticResource ForeColor}" FontSize="16"/>
+        </Border>
+
+        <Button x:Name="SaveButton" Command="{Binding AddCardCommand}" Style="{StaticResource BaseButtonStyle}" Content="Save" Grid.Row="4" Grid.Column="1"  Margin="10" FontSize="20" Click="SaveButton_Click"/>
         <Button x:Name="CancelButton" Command="{Binding CancelCommand}" Style="{StaticResource BaseButtonStyle}" Content="Cancel" Grid.Row="4" Grid.Column="2"  Margin="10" FontSize="20" Click="CancelButton_Click"/>
     </Grid>
 </Page>
