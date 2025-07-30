@@ -159,7 +159,7 @@ namespace PasswordManager.ViewModels
                 FilteredItems = Accounts;
                 SearchText = "";
                 JsonController<AccountModel>.LoadInfoAsync(Accounts, "acc.json");
-                UsernameField = PasswordField = UrlField = null;
+                UsernameField = PasswordField = UrlField = "";
                 isChanging = false;
             }
 
@@ -173,6 +173,7 @@ namespace PasswordManager.ViewModels
                 FilteredItems = Accounts;
                 SearchText = "";
                 JsonController<AccountModel>.LoadInfoAsync(Accounts, "acc.json");
+                UsernameField = PasswordField = UrlField = "";
                 isChanging = false;
             }
         }

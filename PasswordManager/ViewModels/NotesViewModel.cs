@@ -84,6 +84,7 @@ namespace PasswordManager.ViewModels
                 NoteModel note = new NoteModel(NameField, TextField);
                 Notes.Add(note);
                 JsonController<NoteModel>.LoadInfoAsync(Notes, "note.json");
+                NameField = TextField = "";
                 isChanging = false;
             }
             else
@@ -91,6 +92,7 @@ namespace PasswordManager.ViewModels
                 SelectedNote.Name = NameField;
                 SelectedNote.Text = TextField;
                 JsonController<NoteModel>.LoadInfoAsync(Notes, "note.json");
+                NameField = TextField = "";
                 isChanging = false;
             }
         }
