@@ -37,7 +37,7 @@ namespace PasswordManager.ViewModels
             get => _cardNumber;
             set
             {
-                if (IsDigitsOnly(value) && value.Length <= 16)
+                if ((IsDigitsOnly(value) || value == "") && value.Length <= 16)
                 {
                     Set(ref _cardNumber, value);
                 }
@@ -49,7 +49,7 @@ namespace PasswordManager.ViewModels
             get => _mmyy;
             set
             {
-                if (IsDigitsOnly(value.ToString()) && value < 1300)
+                if (IsDigitsOnly(value.ToString()) && value >= 100 && value < 1300)
                 {
                     Set(ref _mmyy, value);
                 } 
@@ -202,7 +202,8 @@ namespace PasswordManager.ViewModels
                 CardModel card = new CardModel(encryptedNumberValues, NumberKeys, MMYYField, encryptedCVVValues, CVVKeys, LastNumbers, img.UriSource.ToString());
                 Cards.Add(card);
                 JsonController<CardModel>.LoadInfoAsync(Cards, "card.json");
-                CardNumberField = "0000000000000000";
+
+                CardNumberField = "";
                 MMYYField = 0000;
                 CVVField = 0;
                 isChanging = false;
@@ -222,6 +223,10 @@ namespace PasswordManager.ViewModels
                 SelectedCard.LastNumbers = LastNumbers;
                 SelectedNumber = new string('●', CardNumberField.ToString().Length - 4) + LastNumbers;
                 JsonController<CardModel>.LoadInfoAsync(Cards, "card.json");
+
+                CardNumberField = "";
+                MMYYField = 0000;
+                CVVField = 0;
                 isChanging = false;
             }
         }
@@ -236,6 +241,9 @@ namespace PasswordManager.ViewModels
 
         public void OnCancelCommandExecuted(object p)
         {
+            CardNumberField = "";
+            MMYYField = 0000;
+            CVVField = 0;
             isChanging = false;
         }
 
@@ -265,7 +273,6 @@ namespace PasswordManager.ViewModels
 
         public void OnChangeCardCommandExecuted(object p)
         {
-
             CardNumberField = Decrypt(SelectedCard.NumberValues, SelectedCard.NumberKeys);
             MMYYField = SelectedCard.MMYY;
             CVVField = Int32.Parse(Decrypt(SelectedCard.CvvValues, SelectedCard.CvvKeys));
