@@ -76,7 +76,7 @@
                 <StackPanel Margin="5 5 0 5">
                     <Label Content="MM/YY: " FontSize="24" Foreground="{StaticResource ForeColor}" Padding="5" Margin="10 0"/>
                     <DockPanel>
-                        <TextBox Style="{StaticResource MainTextBox}" Text="{Binding SelectedCard.MMYY, StringFormat={}{0:00/00}}" FontSize="22" MinWidth="115" MaxWidth="115"  Margin="10 10 0 10" Padding="5" VerticalAlignment="Center" IsReadOnly="True"/>
+                        <TextBox Style="{StaticResource MainTextBox}" Text="{Binding SelectedMMYY, StringFormat={}{0:00/00}}" FontSize="22" MinWidth="115" MaxWidth="115"  Margin="10 10 0 10" Padding="5" VerticalAlignment="Center" IsReadOnly="True"/>
                         <Button Command="{Binding CopyDataCommand}" CommandParameter="MM/YY" Style="{StaticResource AnimatedCopyButtonStyle}" Content="{StaticResource CopyImage}" BorderThickness="0" HorizontalAlignment="Right" Margin="5" Click="CopyButton_Click"/>
                     </DockPanel>
                 </StackPanel>

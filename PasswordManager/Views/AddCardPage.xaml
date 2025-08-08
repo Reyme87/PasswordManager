@@ -48,8 +48,17 @@
 
                 <DockPanel>
                     <StackPanel Margin="5 5 0 5" HorizontalAlignment="Center">
-                        <Label Content="MM/YY: " FontSize="24" Foreground="{StaticResource ForeColor}" Padding="5" Margin="10 0"/>
-                        <TextBox MaxLength="4" Style="{StaticResource AddTextBox}" Text="{Binding MMYYField, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{/D4}}" Width="200" FontSize="22" Margin="10" Padding="5" VerticalAlignment="Center"/>
+                        <DockPanel>
+                            <Label Content="MM: " FontSize="24" Foreground="{StaticResource ForeColor}" Padding="5" Margin="10 0"/>
+                            <Label Content="YY: " FontSize="24" Foreground="{StaticResource ForeColor}" Padding="5" Margin="35 0" HorizontalAlignment="Right"/>
+                        </DockPanel>
+                        
+                        <DockPanel>
+                            <TextBox  Style="{StaticResource AddTextBox}" Text="{Binding MMField, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:D2}}" Width="80" FontSize="22" Margin="10" Padding="5" VerticalAlignment="Center"/>
+                            <Label Content="/" FontSize="40" Foreground="{StaticResource ForeColor}"/>
+                            <TextBox  Style="{StaticResource AddTextBox}" Text="{Binding YYField, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:D2}}" Width="80" FontSize="22" Margin="10" Padding="5" VerticalAlignment="Center"/>
+                        </DockPanel>
+                        
                     </StackPanel>
 
                     <StackPanel Margin="0 5 5 5" HorizontalAlignment="Right">
