@@ -14,6 +14,7 @@ using PasswordManager.Commands;
 using Microsoft.Win32;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using Microsoft.Windows.Themes;
 
 namespace PasswordManager.ViewModels
 {
@@ -25,11 +26,13 @@ namespace PasswordManager.ViewModels
         #region Элементы полей 
 
         private string _cardNumber;
-        private int _mmyy;
+        private int _mm;
+        private int _yy;
         private int _cvv;
         private string _lastNumbers;
         private string _selectedCvv;
         private string _selectedNumber;
+        private string _selectedMMyy;
         private string _infoText;
 
         public string CardNumberField
@@ -44,15 +47,27 @@ namespace PasswordManager.ViewModels
             }
         }
 
-        public int MMYYField
+        public int MMField
         {
-            get => _mmyy;
+            get => _mm;
             set
             {
-                if (IsDigitsOnly(value.ToString()) && value >= 100 && value < 1300)
+                if (IsDigitsOnly(value.ToString()) && value >= 1 && value < 13)
                 {
-                    Set(ref _mmyy, value);
+                    Set(ref _mm, value);
                 } 
+            }
+        }
+
+        public int YYField
+        {
+            get => _yy;
+            set
+            {
+                if (IsDigitsOnly(value.ToString()) && value >= 0 && value < 100)
+                {
+                    Set(ref _yy, value);
+                }
             }
         }
 
@@ -92,6 +107,15 @@ namespace PasswordManager.ViewModels
             set
             {
                 Set(ref _selectedNumber, value);
+            }
+        }
+
+        public string? SelectedMMYY
+        {
+            get => _selectedMMyy;
+            set
+            {
+                Set(ref _selectedMMyy, value);
             }
         }
 
@@ -136,6 +160,7 @@ namespace PasswordManager.ViewModels
                 {
                     SelectedCVV = new string('●', 3);
                     SelectedNumber = new string('●', SelectedCard.NumberValues.Length - 4) + SelectedCard.LastNumbers;
+                    SelectedMMYY = SelectedCard.MM.ToString("D2") + SelectedCard.YY.ToString("D2");
                     RevealImgNum = (Image)Application.Current.FindResource("EyeImage");
                     RevealImgCvv = (Image)Application.Current.FindResource("EyeImage");
                     isRevealedNum = false;
@@ -199,12 +224,13 @@ namespace PasswordManager.ViewModels
                         img = (BitmapImage)Application.Current.FindResource("CardImage");
                         break;
                 }
-                CardModel card = new CardModel(encryptedNumberValues, NumberKeys, MMYYField, encryptedCVVValues, CVVKeys, LastNumbers, img.UriSource.ToString());
+                CardModel card = new CardModel(encryptedNumberValues, NumberKeys, MMField, YYField, encryptedCVVValues, CVVKeys, LastNumbers, img.UriSource.ToString());
                 Cards.Add(card);
                 JsonController<CardModel>.LoadInfoAsync(Cards, "card.json");
 
                 CardNumberField = "";
-                MMYYField = 0000;
+                MMField = 1;
+                YYField = 0;
                 CVVField = 0;
                 isChanging = false;
             }
@@ -213,7 +239,8 @@ namespace PasswordManager.ViewModels
             {
                 string cardNumberStr = CardNumberField.Replace(" ", "");
                 string cvvStr = CVVField.ToString().Replace(" ", "");
-                SelectedCard.MMYY = MMYYField;
+                SelectedCard.MM = MMField;
+                SelectedCard.YY = YYField;
                 SelectedCard.NumberKeys = GenerateKeys(cardNumberStr.Length);
                 SelectedCard.NumberValues = Encrypt(cardNumberStr, SelectedCard.NumberKeys);
                 SelectedCard.CvvKeys = GenerateKeys(cvvStr.Length);
@@ -222,16 +249,18 @@ namespace PasswordManager.ViewModels
                 LastNumbers = cardNumberStr[12..16];
                 SelectedCard.LastNumbers = LastNumbers;
                 SelectedNumber = new string('●', CardNumberField.ToString().Length - 4) + LastNumbers;
+                SelectedMMYY = SelectedCard.MM.ToString("D2") + SelectedCard.YY.ToString("D2");
                 JsonController<CardModel>.LoadInfoAsync(Cards, "card.json");
 
                 CardNumberField = "";
-                MMYYField = 0000;
+                MMField = 1;
+                YYField = 0;
                 CVVField = 0;
                 isChanging = false;
             }
         }
 
-        public bool CanAddCardCommandExecute(object p) => !Equals(CardNumberField, null) && !Equals(MMYYField, null) && !Equals(CVVField, null);
+        public bool CanAddCardCommandExecute(object p) => !Equals(CardNumberField, null) && !Equals(MMField, null) && !Equals(YYField, null) && !Equals(CVVField, null);
 
         #endregion
 
@@ -242,7 +271,8 @@ namespace PasswordManager.ViewModels
         public void OnCancelCommandExecuted(object p)
         {
             CardNumberField = "";
-            MMYYField = 0000;
+            MMField = 1;
+            YYField = 0;
             CVVField = 0;
             isChanging = false;
         }
@@ -260,6 +290,7 @@ namespace PasswordManager.ViewModels
             Cards.Remove(SelectedCard);
             SelectedCVV = null;
             SelectedNumber = null;
+            SelectedMMYY = null;
             JsonController<CardModel>.LoadInfoAsync(Cards, "card.json");
         }
 
@@ -274,7 +305,8 @@ namespace PasswordManager.ViewModels
         public void OnChangeCardCommandExecuted(object p)
         {
             CardNumberField = Decrypt(SelectedCard.NumberValues, SelectedCard.NumberKeys);
-            MMYYField = SelectedCard.MMYY;
+            MMField = SelectedCard.MM;
+            YYField = SelectedCard.YY;
             CVVField = Int32.Parse(Decrypt(SelectedCard.CvvValues, SelectedCard.CvvKeys));
             isChanging = true;
         }
@@ -395,8 +427,9 @@ namespace PasswordManager.ViewModels
             }
             else if (Equals(p.ToString(), "MM/YY"))
             {
-                var str = SelectedCard.MMYY.ToString("D4");
-                Clipboard.SetText(string.Format("{0:##/##}", str));
+                var str = SelectedCard.MM.ToString();
+                str += SelectedCard.YY.ToString();
+                Clipboard.SetText(str);
             }
             else if (Equals(p.ToString(), "CVV/CVC"))
             {
