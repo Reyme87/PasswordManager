@@ -32,6 +32,8 @@
     <BitmapImage x:Key="MirImage" UriSource="/PasswordManager;component/Resources/Mir.png"/>
     <BitmapImage x:Key="MasterCardImage" UriSource="/PasswordManager;component/Resources/MasterCard.png"/>
 
+    <BitmapImage x:Key="IconImage" UriSource="/PasswordManager;component/Resources/Icon.png" RenderOptions.BitmapScalingMode="HighQuality"></BitmapImage>
+
     <Style x:Key="BaseButtonStyle" TargetType="{x:Type Button}">
         <Setter Property="Background" Value="{StaticResource ControlsColor}"/>
         <Setter Property="Foreground" Value="{StaticResource ForeColor}"/>
