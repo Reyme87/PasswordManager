@@ -8,17 +8,19 @@ namespace PasswordManager.Models
     {
         private int[] _numberValues;
         private int[] _numberKeys;
-        private int _mmyy;
+        private int _mm;
+        private int _yy;
         private int[] _cvvValues;
         private int[] _cvvKeys;
         private string _lastNumbers;
         private string _iconPath;
 
-        public CardModel(int[] NumberValues, int[] NumberKeys, int MmYy, int[] CvvValues, int[] CvvKeys, string LastNumbers, string IconPath)
+        public CardModel(int[] NumberValues, int[] NumberKeys, int Mm, int Yy, int[] CvvValues, int[] CvvKeys, string LastNumbers, string IconPath)
         {
             _numberValues = NumberValues;
             _numberKeys = NumberKeys;
-            _mmyy = MmYy;
+            _mm = Mm;
+            _yy = Yy;
             _cvvValues = CvvValues;
             _cvvKeys = CvvKeys;
             _lastNumbers = LastNumbers;
@@ -37,10 +39,16 @@ namespace PasswordManager.Models
             set => _numberKeys = value;
         }
 
-        public int MMYY
+        public int MM
         {
-            get => _mmyy;
-            set => _mmyy = value;
+            get => _mm;
+            set => _mm = value;
+        }
+
+        public int YY
+        {
+            get => _yy;
+            set => _yy = value;
         }
 
         public int[] CvvValues
@@ -69,7 +77,7 @@ namespace PasswordManager.Models
 
         public override bool Equals(object? obj)
         {
-            if (obj is CardModel card) return (LastNumbers == card.LastNumbers && MMYY == card.MMYY);
+            if (obj is CardModel card) return (LastNumbers == card.LastNumbers && MM == card.MM && YY == card.YY);
             return false;
         }
 
