@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media.Imaging;
 using Microsoft.Win32;
-using Newtonsoft.Json;
 using PasswordManager.Commands;
 using PasswordManager.Models;
 using PasswordManager.ViewModels.Base;
@@ -152,8 +149,8 @@ namespace PasswordManager.ViewModels
         {
             if (!isChanging)
             {
-                int[] Keys = GenerateKeys(PasswordField.Length);
-                int[] encryptedValues = Encrypt(PasswordField, Keys);
+                int[] Keys = KeyGenerator.GenerateKeys(PasswordField.Length);
+                int[] encryptedValues = Encrypter.Encrypt(PasswordField, Keys);
                 AccountModel account = new AccountModel(UsernameField, encryptedValues, UrlField, Keys);
                 Accounts.Add(account);
                 FilteredItems = Accounts;
@@ -166,8 +163,8 @@ namespace PasswordManager.ViewModels
             else
             {
                 SelectedAccount.Username = UsernameField;
-                SelectedAccount.Keys = GenerateKeys(PasswordField.Length);
-                SelectedAccount.Values = Encrypt(PasswordField, SelectedAccount.Keys);
+                SelectedAccount.Keys = KeyGenerator.GenerateKeys(PasswordField.Length);
+                SelectedAccount.Values = Encrypter.Encrypt(PasswordField, SelectedAccount.Keys);
                 SelectedAccount.Url = UrlField;
                 SelectedPassword = new string('●', SelectedAccount.Values.Length);
                 FilteredItems = Accounts;
@@ -218,7 +215,7 @@ namespace PasswordManager.ViewModels
         public void OnChangeAccountCommandExecuted(object p)
         {
             UsernameField = SelectedAccount.Username;
-            PasswordField = Decrypt(SelectedAccount.Values, SelectedAccount.Keys);
+            PasswordField = Decrypter.Decrypt(SelectedAccount.Values, SelectedAccount.Keys);
             UrlField = SelectedAccount.Url;
             isChanging = true;
         }
@@ -297,7 +294,7 @@ namespace PasswordManager.ViewModels
             }
             else
             {
-                SelectedPassword = Decrypt(SelectedAccount.Values, SelectedAccount.Keys);
+                SelectedPassword = Decrypter.Decrypt(SelectedAccount.Values, SelectedAccount.Keys);
                 RevealImg = (Image)Application.Current.FindResource("CrossedEyeImage");
                 isRevealed = true;
             }
@@ -319,7 +316,7 @@ namespace PasswordManager.ViewModels
             }
             else if (Equals(p.ToString(), "Password"))
             {
-                Clipboard.SetText(Decrypt(SelectedAccount.Values, SelectedAccount.Keys));
+                Clipboard.SetText(Decrypter.Decrypt(SelectedAccount.Values, SelectedAccount.Keys));
             }
             else if (Equals(p.ToString(), "Website"))
             {
@@ -375,98 +372,6 @@ namespace PasswordManager.ViewModels
             Accounts = JsonController<AccountModel>.GetInfo("acc.json");
             FilteredItems = Accounts;
             RevealImg = (Image)Application.Current.FindResource("EyeImage");
-        }
-
-        private int[] Encrypt(string password, int[] keys)
-        {
-            int[] values = new int[password.Length];
-            for (int i = 0; i < password.Length; i++)
-            {
-                int c = (int)password[i];
-                string binaryString = Convert.ToString(c, 2);
-                binaryString = new string('0', 8 - binaryString.Length) + binaryString;
-                string leftHalf, rightHalf;
-                rightHalf = binaryString.Substring(4);
-                leftHalf = binaryString.Remove(4);
-
-                int rHalfCode = Convert.ToInt32(rightHalf, 2);
-                int lHalfCode = Convert.ToInt32(leftHalf, 2);
-                int temp = 0;
-
-                temp = rHalfCode ^ keys[i];
-                rHalfCode = lHalfCode;
-                lHalfCode = temp;
-
-                temp = rHalfCode ^ keys[i];
-                rHalfCode = lHalfCode;
-                lHalfCode = temp;
-
-                leftHalf = Convert.ToString(lHalfCode, 2);
-                rightHalf = Convert.ToString(rHalfCode, 2);
-
-                leftHalf = new string('0', 4 - leftHalf.Length) + leftHalf;
-                rightHalf = new string('0', 4 - rightHalf.Length) + rightHalf;
-
-                leftHalf += rightHalf;
-
-                int result = Convert.ToInt32(leftHalf, 2);
-                values[i] = result;
-            }
-
-            return values;
-        }
-
-        private string Decrypt(int[] values, int[] keys)
-        {
-            string password = "";
-            for (int i = 0; i < values.Length; i++)
-            {
-                int c = values[i];
-                string binaryString = Convert.ToString(c, 2);
-                binaryString = new string('0', 8 - binaryString.Length) + binaryString;
-                string leftHalf, rightHalf;
-                rightHalf = binaryString.Substring(4);
-                leftHalf = binaryString.Remove(4);
-
-                int rHalfCode = Convert.ToInt32(rightHalf, 2);
-                int lHalfCode = Convert.ToInt32(leftHalf, 2);
-                int temp = 0;
-
-                temp = rHalfCode ^ keys[i];
-                rHalfCode = lHalfCode;
-                lHalfCode = temp;
-
-                temp = rHalfCode ^ keys[i];
-                rHalfCode = lHalfCode;
-                lHalfCode = temp;
-
-                leftHalf = Convert.ToString(lHalfCode, 2);
-                rightHalf = Convert.ToString(rHalfCode, 2);
-
-                leftHalf = new string('0', 4 - leftHalf.Length) + leftHalf;
-                rightHalf = new string('0', 4 - rightHalf.Length) + rightHalf;
-
-                leftHalf += rightHalf;
-
-                int result = Convert.ToInt32(leftHalf, 2);
-                password += Convert.ToChar(result);
-            }
-
-            return password;
-        }
-
-        private int[] GenerateKeys(int length)
-        {
-            Random random = new Random();
-
-            int[] keys = new int[length];
-
-            for (int i = 0; i < keys.Length; i++)
-            {
-                keys[i] = random.Next(1, 15);
-            }
-
-            return keys;
         }
 
         private void FilterItems()

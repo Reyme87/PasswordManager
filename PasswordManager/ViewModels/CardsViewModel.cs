@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
 using System.Windows;
 using PasswordManager.Models;
 using PasswordManager.ViewModels.Base;
@@ -14,7 +8,6 @@ using PasswordManager.Commands;
 using Microsoft.Win32;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using Microsoft.Windows.Themes;
 
 namespace PasswordManager.ViewModels
 {
@@ -202,10 +195,10 @@ namespace PasswordManager.ViewModels
             {
                 string cardNumberStr = CardNumberField.Replace(" ", "");
                 string cvvStr = CVVField.ToString().Replace(" ", "");
-                int[] NumberKeys = GenerateKeys(cardNumberStr.Length);
-                int[] encryptedNumberValues = Encrypt(cardNumberStr, NumberKeys);
-                int[] CVVKeys = GenerateKeys(cvvStr.Length);
-                int[] encryptedCVVValues = Encrypt(cvvStr, CVVKeys);
+                int[] NumberKeys = KeyGenerator.GenerateKeys(cardNumberStr.Length);
+                int[] encryptedNumberValues = Encrypter.Encrypt(cardNumberStr, NumberKeys);
+                int[] CVVKeys = KeyGenerator.GenerateKeys(cvvStr.Length);
+                int[] encryptedCVVValues = Encrypter.Encrypt(cvvStr, CVVKeys);
                 LastNumbers = cardNumberStr[12..16];
 
                 BitmapImage img;
@@ -241,10 +234,10 @@ namespace PasswordManager.ViewModels
                 string cvvStr = CVVField.ToString().Replace(" ", "");
                 SelectedCard.MM = MMField;
                 SelectedCard.YY = YYField;
-                SelectedCard.NumberKeys = GenerateKeys(cardNumberStr.Length);
-                SelectedCard.NumberValues = Encrypt(cardNumberStr, SelectedCard.NumberKeys);
-                SelectedCard.CvvKeys = GenerateKeys(cvvStr.Length);
-                SelectedCard.CvvValues = Encrypt(cvvStr, SelectedCard.CvvKeys);
+                SelectedCard.NumberKeys = KeyGenerator.GenerateKeys(cardNumberStr.Length);
+                SelectedCard.NumberValues = Encrypter.Encrypt(cardNumberStr, SelectedCard.NumberKeys);
+                SelectedCard.CvvKeys = KeyGenerator.GenerateKeys(cvvStr.Length);
+                SelectedCard.CvvValues = Encrypter.Encrypt(cvvStr, SelectedCard.CvvKeys);
                 SelectedCVV = new string('●', 3);
                 LastNumbers = cardNumberStr[12..16];
                 SelectedCard.LastNumbers = LastNumbers;
@@ -304,10 +297,10 @@ namespace PasswordManager.ViewModels
 
         public void OnChangeCardCommandExecuted(object p)
         {
-            CardNumberField = Decrypt(SelectedCard.NumberValues, SelectedCard.NumberKeys);
+            CardNumberField = Decrypter.Decrypt(SelectedCard.NumberValues, SelectedCard.NumberKeys);
             MMField = SelectedCard.MM;
             YYField = SelectedCard.YY;
-            CVVField = Int32.Parse(Decrypt(SelectedCard.CvvValues, SelectedCard.CvvKeys));
+            CVVField = Int32.Parse(Decrypter.Decrypt(SelectedCard.CvvValues, SelectedCard.CvvKeys));
             isChanging = true;
         }
 
@@ -387,7 +380,7 @@ namespace PasswordManager.ViewModels
                     }
                     else
                     {
-                        SelectedNumber = Decrypt(SelectedCard.NumberValues, SelectedCard.NumberKeys);
+                        SelectedNumber = Decrypter.Decrypt(SelectedCard.NumberValues, SelectedCard.NumberKeys);
                         RevealImgNum = (Image)Application.Current.FindResource("CrossedEyeImage");
                         isRevealedNum = true;
                     }
@@ -402,7 +395,7 @@ namespace PasswordManager.ViewModels
                     }
                     else
                     {
-                        string cvv = Decrypt(SelectedCard.CvvValues, SelectedCard.CvvKeys);
+                        string cvv = Decrypter.Decrypt(SelectedCard.CvvValues, SelectedCard.CvvKeys);
                         SelectedCVV = new string('0', 3 - cvv.Length) + cvv;
                         RevealImgCvv = (Image)Application.Current.FindResource("CrossedEyeImage");
                         isRevealedCvv = true;
@@ -423,7 +416,7 @@ namespace PasswordManager.ViewModels
         {
             if (Equals(p.ToString(), "Card number"))
             {
-                Clipboard.SetText(Decrypt(SelectedCard.NumberValues, SelectedCard.NumberKeys));
+                Clipboard.SetText(Decrypter.Decrypt(SelectedCard.NumberValues, SelectedCard.NumberKeys));
             }
             else if (Equals(p.ToString(), "MM/YY"))
             {
@@ -433,7 +426,7 @@ namespace PasswordManager.ViewModels
             }
             else if (Equals(p.ToString(), "CVV/CVC"))
             {
-                Clipboard.SetText(Decrypt(SelectedCard.CvvValues, SelectedCard.CvvKeys));
+                Clipboard.SetText(Decrypter.Decrypt(SelectedCard.CvvValues, SelectedCard.CvvKeys));
             }
 
             InfoText = $"{p.ToString()} copied";
@@ -470,98 +463,6 @@ namespace PasswordManager.ViewModels
             Cards = JsonController<CardModel>.GetInfo("card.json");
             RevealImgNum = (Image)Application.Current.FindResource("EyeImage");
             RevealImgCvv = (Image)Application.Current.FindResource("EyeImage");
-        }
-
-        private int[] Encrypt(string number, int[] keys)
-        {
-            int[] values = new int[number.Length];
-            for (int i = 0; i < number.Length; i++)
-            {
-                int c = (int)number[i];
-                string binaryString = Convert.ToString(c, 2);
-                binaryString = new string('0', 8 - binaryString.Length) + binaryString;
-                string leftHalf, rightHalf;
-                rightHalf = binaryString.Substring(4);
-                leftHalf = binaryString.Remove(4);
-
-                int rHalfCode = Convert.ToInt32(rightHalf, 2);
-                int lHalfCode = Convert.ToInt32(leftHalf, 2);
-                int temp = 0;
-
-                temp = rHalfCode ^ keys[i];
-                rHalfCode = lHalfCode;
-                lHalfCode = temp;
-
-                temp = rHalfCode ^ keys[i];
-                rHalfCode = lHalfCode;
-                lHalfCode = temp;
-
-                leftHalf = Convert.ToString(lHalfCode, 2);
-                rightHalf = Convert.ToString(rHalfCode, 2);
-
-                leftHalf = new string('0', 4 - leftHalf.Length) + leftHalf;
-                rightHalf = new string('0', 4 - rightHalf.Length) + rightHalf;
-
-                leftHalf += rightHalf;
-
-                int result = Convert.ToInt32(leftHalf, 2);
-                values[i] = result;
-            }
-
-            return values;
-        }
-
-        private string Decrypt(int[] values, int[] keys)
-        {
-            string password = "";
-            for (int i = 0; i < values.Length; i++)
-            {
-                int c = values[i];
-                string binaryString = Convert.ToString(c, 2);
-                binaryString = new string('0', 8 - binaryString.Length) + binaryString;
-                string leftHalf, rightHalf;
-                rightHalf = binaryString.Substring(4);
-                leftHalf = binaryString.Remove(4);
-
-                int rHalfCode = Convert.ToInt32(rightHalf, 2);
-                int lHalfCode = Convert.ToInt32(leftHalf, 2);
-                int temp = 0;
-
-                temp = rHalfCode ^ keys[i];
-                rHalfCode = lHalfCode;
-                lHalfCode = temp;
-
-                temp = rHalfCode ^ keys[i];
-                rHalfCode = lHalfCode;
-                lHalfCode = temp;
-
-                leftHalf = Convert.ToString(lHalfCode, 2);
-                rightHalf = Convert.ToString(rHalfCode, 2);
-
-                leftHalf = new string('0', 4 - leftHalf.Length) + leftHalf;
-                rightHalf = new string('0', 4 - rightHalf.Length) + rightHalf;
-
-                leftHalf += rightHalf;
-
-                int result = Convert.ToInt32(leftHalf, 2);
-                password += Convert.ToChar(result);
-            }
-
-            return password;
-        }
-
-        private int[] GenerateKeys(int length)
-        {
-            Random random = new Random();
-
-            int[] keys = new int[length];
-
-            for (int i = 0; i < keys.Length; i++)
-            {
-                keys[i] = random.Next(1, 15);
-            }
-
-            return keys;
         }
 
         public static bool IsDigitsOnly(string str)
