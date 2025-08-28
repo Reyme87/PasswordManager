@@ -1,0 +1,366 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <FontFamily x:Key="MainFont">Arial Rounded MT Bold</FontFamily>
+    <FontFamily x:Key="AdditiveFont">Wide Latin</FontFamily>
+
+    <Brush x:Key="BackColor">#212024</Brush>
+    <Brush x:Key="ControlsColor">#027A64</Brush>
+    <Brush x:Key="ForeColor">#e9e7e2</Brush>
+
+    <!--<Brush x:Key="ControlsHoverColor">#D53E07</Brush>
+    <Brush x:Key="ControlsPressColor">#A5260A</Brush>-->
+    <Brush x:Key="ControlsHoverColor">#026956</Brush>
+    <Brush x:Key="ControlsPressColor">#02473B</Brush>
+    <Brush x:Key="AlterControlsHoverColor">#2B2A30</Brush>
+    <Brush x:Key="UnenabledColor">#333329</Brush>
+    <Brush x:Key="SelectionColor">Yellow</Brush>
+    <Brush x:Key="AdditionalHoverColor">#D6D4D0</Brush>
+
+    <Color x:Key="PressAnimationColor">#02473B</Color>
+    <Color x:Key="ControlsAnimationColor">#026956</Color>
+    <Color x:Key="AlterPressAnimationColor">#7D7B79</Color>
+    <Color x:Key="AlterControlsAnimationColor">#2B2A30</Color>
+
+    <Image x:Key="CopyImage" x:Shared="false" Width="25" Source="/Resources/copy.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
+    <Image x:Key="EyeImage" x:Shared="false" Source="/Resources/eye.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
+    <Image x:Key="SearchImage" Source="/Resources/search.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
+    <Image x:Key="CrossedEyeImage" x:Shared="false" Source="/Resources/eye-crossed.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
+    <!--<Image x:Key="CardImage" x:Shared="false" Source="/Resources/Card.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>-->
+    <BitmapImage x:Key="CardImage" UriSource="/PasswordManager;component/Resources/Card.png"/>
+    <BitmapImage x:Key="VisaImage" UriSource="/PasswordManager;component/Resources/Visa.png"/>
+    <BitmapImage x:Key="MirImage" UriSource="/PasswordManager;component/Resources/Mir.png"/>
+    <BitmapImage x:Key="MasterCardImage" UriSource="/PasswordManager;component/Resources/MasterCard.png"/>
+
+    <BitmapImage x:Key="IconImage" UriSource="/PasswordManager;component/Resources/Icon.png" RenderOptions.BitmapScalingMode="HighQuality"></BitmapImage>
+
+    <Style x:Key="BaseButtonStyle" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="{StaticResource ControlsColor}"/>
+        <Setter Property="Foreground" Value="{StaticResource ForeColor}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border CornerRadius="10" Background="{TemplateBinding Background}">
+                        <Grid>
+                            <Label Content="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" FontSize="22" 
+                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{StaticResource ControlsHoverColor}" />
+                            <Setter Property="Foreground" Value="{StaticResource ForeColor}" />
+                        </Trigger>
+
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" Value="{StaticResource ControlsPressColor}" />
+                            <Setter Property="Foreground" Value="{StaticResource ForeColor}" />
+                        </Trigger>
+
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="{StaticResource UnenabledColor}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="TopButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border CornerRadius="10 10 0 0" Background="{TemplateBinding Background}">
+                        <Grid>
+                            <Label Content="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" FontSize="28" 
+                                    HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{StaticResource ControlsHoverColor}" />
+                            <Setter Property="Foreground" Value="{StaticResource ForeColor}" />
+                        </Trigger>
+
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" Value="{StaticResource ControlsPressColor}" />
+                            <Setter Property="Foreground" Value="{StaticResource ForeColor}" />
+                        </Trigger>
+
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="{StaticResource UnenabledColor}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="CenterButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border Background="{TemplateBinding Background}">
+                        <Grid>
+                            <Label Content="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" FontSize="28" 
+                                HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{StaticResource ControlsHoverColor}" />
+                            <Setter Property="Foreground" Value="{StaticResource ForeColor}" />
+                        </Trigger>
+
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" Value="{StaticResource ControlsPressColor}" />
+                            <Setter Property="Foreground" Value="{StaticResource ForeColor}" />
+                        </Trigger>
+
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="{StaticResource UnenabledColor}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="BottomButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border CornerRadius="0 0 10 10" Background="{TemplateBinding Background}">
+                        <Grid>
+                            <Label Content="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" FontSize="28" 
+                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{StaticResource ControlsHoverColor}" />
+                            <Setter Property="Foreground" Value="{StaticResource ForeColor}" />
+                        </Trigger>
+
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" Value="{StaticResource ControlsPressColor}" />
+                            <Setter Property="Foreground" Value="{StaticResource ForeColor}" />
+                        </Trigger>
+
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="{StaticResource UnenabledColor}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="AnimatedButtonStyle" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="{StaticResource ControlsColor}"/>
+        <Setter Property="Foreground" Value="{StaticResource ForeColor}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border CornerRadius="50" Background="{TemplateBinding Background}">
+                        <Grid>
+                            <Label Content="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" FontSize="22" 
+                            HorizontalAlignment="Center" VerticalAlignment="Center" Padding="3"/>
+                        </Grid>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{StaticResource ControlsHoverColor}" />
+                            <Setter Property="Foreground" Value="{StaticResource ForeColor}" />
+                        </Trigger>
+
+                        <Trigger Property="IsPressed" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation 
+                                            Storyboard.TargetProperty="Background.(SolidColorBrush.Color)"
+                                            To="{StaticResource PressAnimationColor}"
+                                            Duration="0:0:0.1"
+                                            />
+
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation 
+                                            Storyboard.TargetProperty="Background.(SolidColorBrush.Color)"
+                                            To="{StaticResource ControlsAnimationColor}"
+                                            Duration="0:0:0.1"
+                                            />
+
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="{StaticResource UnenabledColor}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="AnimatedCopyButtonStyle" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="{StaticResource BackColor}"/>
+        <Setter Property="Foreground" Value="{StaticResource ForeColor}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border CornerRadius="10" Background="{TemplateBinding Background}">
+                        <Grid>
+                            <Label Content="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}"
+                                    HorizontalAlignment="Center" VerticalAlignment="Center" Padding="3"/>
+                        </Grid>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{StaticResource AlterControlsHoverColor}" />
+                            <Setter Property="Foreground" Value="{StaticResource ForeColor}" />
+                        </Trigger>
+
+                        <Trigger Property="IsPressed" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation 
+                                             Storyboard.TargetProperty="Background.(SolidColorBrush.Color)"
+                                             To="{StaticResource AlterPressAnimationColor}"
+                                             Duration="0:0:0.1"
+                                             />
+
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation 
+                                             Storyboard.TargetProperty="Background.(SolidColorBrush.Color)"
+                                             To="{StaticResource AlterControlsAnimationColor}"
+                                             Duration="0:0:0.1"
+                                             />
+
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="MainTextBox" TargetType="{x:Type TextBox}">
+        <Setter Property="Background" Value="{StaticResource ControlsColor}"/>
+        <Setter Property="Foreground" Value="{StaticResource ForeColor}"/>
+        <Setter Property="SelectionBrush" Value="{StaticResource ControlsHoverColor}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource ForeColor}"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBox}">
+                    <Border x:Name="border" CornerRadius="10"
+                    BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                        <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{StaticResource ControlsHoverColor}" />
+                        </Trigger>
+                        <Trigger Property="IsSelectionActive" Value="True">
+                            <Setter Property="BorderBrush" Value="{StaticResource AdditionalHoverColor}" />
+                            <Setter Property="VerticalContentAlignment" Value="Center"/>
+                            <Setter Property="CaretBrush" Value="{StaticResource ForeColor}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="AddTextBox" TargetType="{x:Type TextBox}" BasedOn="{StaticResource MainTextBox}">
+        <Setter Property="Background" Value="{StaticResource ForeColor}"/>
+        <Setter Property="Foreground" Value="{StaticResource BackColor}"/>
+        <Setter Property="SelectionBrush" Value="{StaticResource UnenabledColor}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource BackColor}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBox}">
+                    <Border x:Name="border" CornerRadius="10"
+                        BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                        <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{StaticResource AdditionalHoverColor}" />
+                        </Trigger>
+                        <Trigger Property="IsSelectionActive" Value="True">
+                            <Setter Property="BorderBrush" Value="{StaticResource BackColor}" />
+                            <Setter Property="VerticalContentAlignment" Value="Center"/>
+                            <Setter Property="CaretBrush" Value="{StaticResource BackColor}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type ListBox}">
+        <Setter Property="Background" Value="{StaticResource ControlsColor}"/>
+        <Setter Property="Foreground" Value="{StaticResource ForeColor}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource ForeColor}"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Style.Resources>
+            <Style TargetType="Border">
+                <Setter Property="CornerRadius" Value="10"></Setter>
+            </Style>
+        </Style.Resources>
+    </Style>
+
+    <Style TargetType="{x:Type ListBoxItem}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBoxItem">
+                    <Border Name="Border" CornerRadius="5"
+                            BorderThickness="2"
+                            SnapsToDevicePixels="true">
+                        <ContentPresenter />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsSelected" Value="true">
+                            <Setter TargetName="Border" Property="Background" Value="{StaticResource ControlsPressColor}" />
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver" SourceName="Border" Value="True" />
+                                <Condition Property="IsSelected" Value="False" />
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="Border" Property="Background" Value="{StaticResource ControlsHoverColor}" />
+                        </MultiTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+    </Style>
+
+</ResourceDictionary>

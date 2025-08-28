@@ -1,17 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
+using PasswordManager.Views;
 
 namespace PasswordManager
 {
@@ -23,6 +13,21 @@ namespace PasswordManager
         public MainPage()
         {
             InitializeComponent();
+        }
+
+        private void PasswordsButton_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new PasswordsPage());
+        }
+
+        private void CardsButton_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new CardsPage());
+        }
+
+        private void NotesButton_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new NotesPage());
         }
     }
 }
