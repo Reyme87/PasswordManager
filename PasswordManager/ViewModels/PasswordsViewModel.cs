@@ -149,8 +149,8 @@ namespace PasswordManager.ViewModels
         {
             if (!isChanging)
             {
-                int[] Keys = KeyGenerator.GenerateKeys(PasswordField.Length);
-                int[] encryptedValues = Encrypter.Encrypt(PasswordField, Keys);
+                int[] Keys = Encryption.GenerateKeys(PasswordField.Length);
+                int[] encryptedValues = Encryption.Encrypt(PasswordField, Keys);
                 AccountModel account = new AccountModel(UsernameField, encryptedValues, UrlField, Keys);
                 Accounts.Add(account);
                 FilteredItems = Accounts;
@@ -163,8 +163,8 @@ namespace PasswordManager.ViewModels
             else
             {
                 SelectedAccount.Username = UsernameField;
-                SelectedAccount.Keys = KeyGenerator.GenerateKeys(PasswordField.Length);
-                SelectedAccount.Values = Encrypter.Encrypt(PasswordField, SelectedAccount.Keys);
+                SelectedAccount.Keys = Encryption.GenerateKeys(PasswordField.Length);
+                SelectedAccount.Values = Encryption.Encrypt(PasswordField, SelectedAccount.Keys);
                 SelectedAccount.Url = UrlField;
                 SelectedPassword = new string('●', SelectedAccount.Values.Length);
                 FilteredItems = Accounts;
@@ -215,7 +215,7 @@ namespace PasswordManager.ViewModels
         public void OnChangeAccountCommandExecuted(object p)
         {
             UsernameField = SelectedAccount.Username;
-            PasswordField = Decrypter.Decrypt(SelectedAccount.Values, SelectedAccount.Keys);
+            PasswordField = Encryption.Decrypt(SelectedAccount.Values, SelectedAccount.Keys);
             UrlField = SelectedAccount.Url;
             isChanging = true;
         }
@@ -294,7 +294,7 @@ namespace PasswordManager.ViewModels
             }
             else
             {
-                SelectedPassword = Decrypter.Decrypt(SelectedAccount.Values, SelectedAccount.Keys);
+                SelectedPassword = Encryption.Decrypt(SelectedAccount.Values, SelectedAccount.Keys);
                 RevealImg = (Image)Application.Current.FindResource("CrossedEyeImage");
                 isRevealed = true;
             }
@@ -316,7 +316,7 @@ namespace PasswordManager.ViewModels
             }
             else if (Equals(p.ToString(), "Password"))
             {
-                Clipboard.SetText(Decrypter.Decrypt(SelectedAccount.Values, SelectedAccount.Keys));
+                Clipboard.SetText(Encryption.Decrypt(SelectedAccount.Values, SelectedAccount.Keys));
             }
             else if (Equals(p.ToString(), "Website"))
             {

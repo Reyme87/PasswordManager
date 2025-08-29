@@ -195,10 +195,10 @@ namespace PasswordManager.ViewModels
             {
                 string cardNumberStr = CardNumberField.Replace(" ", "");
                 string cvvStr = CVVField.ToString().Replace(" ", "");
-                int[] NumberKeys = KeyGenerator.GenerateKeys(cardNumberStr.Length);
-                int[] encryptedNumberValues = Encrypter.Encrypt(cardNumberStr, NumberKeys);
-                int[] CVVKeys = KeyGenerator.GenerateKeys(cvvStr.Length);
-                int[] encryptedCVVValues = Encrypter.Encrypt(cvvStr, CVVKeys);
+                int[] NumberKeys = Encryption.GenerateKeys(cardNumberStr.Length);
+                int[] encryptedNumberValues = Encryption.Encrypt(cardNumberStr, NumberKeys);
+                int[] CVVKeys = Encryption.GenerateKeys(cvvStr.Length);
+                int[] encryptedCVVValues = Encryption.Encrypt(cvvStr, CVVKeys);
                 LastNumbers = cardNumberStr[12..16];
 
                 BitmapImage img;
@@ -234,10 +234,10 @@ namespace PasswordManager.ViewModels
                 string cvvStr = CVVField.ToString().Replace(" ", "");
                 SelectedCard.MM = MMField;
                 SelectedCard.YY = YYField;
-                SelectedCard.NumberKeys = KeyGenerator.GenerateKeys(cardNumberStr.Length);
-                SelectedCard.NumberValues = Encrypter.Encrypt(cardNumberStr, SelectedCard.NumberKeys);
-                SelectedCard.CvvKeys = KeyGenerator.GenerateKeys(cvvStr.Length);
-                SelectedCard.CvvValues = Encrypter.Encrypt(cvvStr, SelectedCard.CvvKeys);
+                SelectedCard.NumberKeys = Encryption.GenerateKeys(cardNumberStr.Length);
+                SelectedCard.NumberValues = Encryption.Encrypt(cardNumberStr, SelectedCard.NumberKeys);
+                SelectedCard.CvvKeys = Encryption.GenerateKeys(cvvStr.Length);
+                SelectedCard.CvvValues = Encryption.Encrypt(cvvStr, SelectedCard.CvvKeys);
                 SelectedCVV = new string('●', 3);
                 LastNumbers = cardNumberStr[12..16];
                 SelectedCard.LastNumbers = LastNumbers;
@@ -297,10 +297,10 @@ namespace PasswordManager.ViewModels
 
         public void OnChangeCardCommandExecuted(object p)
         {
-            CardNumberField = Decrypter.Decrypt(SelectedCard.NumberValues, SelectedCard.NumberKeys);
+            CardNumberField = Encryption.Decrypt(SelectedCard.NumberValues, SelectedCard.NumberKeys);
             MMField = SelectedCard.MM;
             YYField = SelectedCard.YY;
-            CVVField = Int32.Parse(Decrypter.Decrypt(SelectedCard.CvvValues, SelectedCard.CvvKeys));
+            CVVField = Int32.Parse(Encryption.Decrypt(SelectedCard.CvvValues, SelectedCard.CvvKeys));
             isChanging = true;
         }
 
@@ -380,7 +380,7 @@ namespace PasswordManager.ViewModels
                     }
                     else
                     {
-                        SelectedNumber = Decrypter.Decrypt(SelectedCard.NumberValues, SelectedCard.NumberKeys);
+                        SelectedNumber = Encryption.Decrypt(SelectedCard.NumberValues, SelectedCard.NumberKeys);
                         RevealImgNum = (Image)Application.Current.FindResource("CrossedEyeImage");
                         isRevealedNum = true;
                     }
@@ -395,7 +395,7 @@ namespace PasswordManager.ViewModels
                     }
                     else
                     {
-                        string cvv = Decrypter.Decrypt(SelectedCard.CvvValues, SelectedCard.CvvKeys);
+                        string cvv = Encryption.Decrypt(SelectedCard.CvvValues, SelectedCard.CvvKeys);
                         SelectedCVV = new string('0', 3 - cvv.Length) + cvv;
                         RevealImgCvv = (Image)Application.Current.FindResource("CrossedEyeImage");
                         isRevealedCvv = true;
@@ -416,7 +416,7 @@ namespace PasswordManager.ViewModels
         {
             if (Equals(p.ToString(), "Card number"))
             {
-                Clipboard.SetText(Decrypter.Decrypt(SelectedCard.NumberValues, SelectedCard.NumberKeys));
+                Clipboard.SetText(Encryption.Decrypt(SelectedCard.NumberValues, SelectedCard.NumberKeys));
             }
             else if (Equals(p.ToString(), "MM/YY"))
             {
@@ -426,7 +426,7 @@ namespace PasswordManager.ViewModels
             }
             else if (Equals(p.ToString(), "CVV/CVC"))
             {
-                Clipboard.SetText(Decrypter.Decrypt(SelectedCard.CvvValues, SelectedCard.CvvKeys));
+                Clipboard.SetText(Encryption.Decrypt(SelectedCard.CvvValues, SelectedCard.CvvKeys));
             }
 
             InfoText = $"{p.ToString()} copied";
