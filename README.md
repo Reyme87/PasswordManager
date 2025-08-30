@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-   <img src="https://img.shields.io/badge/Platform-.Net_9.0-blueviolet?style=flat&label=Framework" alt="Platform">
+   <img src="https://img.shields.io/badge/.Net-9.0-blueviolet?style=flat&labelColor=grey" alt=".Net">
    <img src="https://img.shields.io/badge/Framework-WPF-blue?style=flat&label=Framework" alt="Framework">
 </p>
 
