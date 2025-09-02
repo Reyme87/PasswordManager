@@ -207,11 +207,17 @@ namespace PasswordManager.ViewModels
                     case '2':
                         img = (BitmapImage)Application.Current.FindResource("MirImage");
                         break;
+                    case '3':
+                        img = (BitmapImage)Application.Current.FindResource("AmexImage");
+                        break;
                     case '4':
                         img = (BitmapImage)Application.Current.FindResource("VisaImage");
                         break;
                     case '5':
                         img = (BitmapImage)Application.Current.FindResource("MasterCardImage");
+                        break;
+                    case '6':
+                        img = (BitmapImage)Application.Current.FindResource("UnionPayImage");
                         break;
                     default:
                         img = (BitmapImage)Application.Current.FindResource("CardImage");
