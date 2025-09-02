@@ -107,6 +107,7 @@ namespace PasswordManager.ViewModels
 
         public void OnCancelCommandExecuted(object p)
         {
+            NameField = TextField = "";
             isChanging = false;
         }
 
