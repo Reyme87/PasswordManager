@@ -8,13 +8,15 @@ namespace PasswordManager.Models
         private int[] _values;
         private string? _url;
         private int[] _keys;
+        private string _iconPath;
 
-        public AccountModel(string Username, int[] Values, string Url, int[] Keys) 
+        public AccountModel(string Username, int[] Values, string Url, int[] Keys, string IconPath) 
         {
             _username = Username;
             _values = Values;
             _url = Url;
             _keys = Keys;
+            _iconPath = IconPath;
         }
 
         public string? Username
@@ -39,6 +41,12 @@ namespace PasswordManager.Models
         {
             get => _keys;
             set => _keys = value;
+        }
+
+        public string IconPath
+        {
+            get => _iconPath;
+            set => _iconPath = value;
         }
 
         public override bool Equals(object? obj)
