@@ -33,6 +33,7 @@
     <BitmapImage x:Key="MasterCardImage" UriSource="/PasswordManager;component/Resources/MasterCard.png"/>
     <BitmapImage x:Key="UnionPayImage" UriSource="/PasswordManager;component/Resources/UnionPay.png"/>
     <BitmapImage x:Key="AmexImage" UriSource="/PasswordManager;component/Resources/AmEx.png"/>
+    <BitmapImage x:Key="WebImage" UriSource="/PasswordManager;component/Resources/WebIcon.png"/>
 
     <BitmapImage x:Key="IconImage" UriSource="/PasswordManager;component/Resources/Icon.png" RenderOptions.BitmapScalingMode="HighQuality"></BitmapImage>
 
