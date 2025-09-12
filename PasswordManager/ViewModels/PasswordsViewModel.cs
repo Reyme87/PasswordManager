@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 using Microsoft.Win32;
 using PasswordManager.Commands;
 using PasswordManager.Models;
@@ -112,6 +113,7 @@ namespace PasswordManager.ViewModels
 
         private AccountModel _selectedAccount;
         private Image _revealImg;
+        private WebParser _parser;
 
         public AccountModel SelectedAccount
         {
@@ -137,6 +139,15 @@ namespace PasswordManager.ViewModels
             }
         }
 
+        public WebParser Parser
+        {
+            get => _parser;
+            set
+            {
+                Set(ref _parser, value);
+            }
+        }
+
         #endregion
 
         #region Команды
@@ -145,13 +156,24 @@ namespace PasswordManager.ViewModels
 
         public ICommand AddAccountCommand { get; }
 
-        public void OnAddAccountComandExecuted(object p)
+        public async void OnAddAccountComandExecuted(object p)
         {
             if (!isChanging)
             {
                 int[] Keys = Encryption.GenerateKeys(PasswordField.Length);
                 int[] encryptedValues = Encryption.Encrypt(PasswordField, Keys);
-                AccountModel account = new AccountModel(UsernameField, encryptedValues, UrlField, Keys);
+                string icon = ((BitmapImage)Application.Current.FindResource("WebImage")).UriSource.ToString();
+                if (await Parser.CheckExistanceAsync(UrlField))
+                {
+                    string favicon = await Parser.GetFaviconUriAsync(UrlField);
+                    if (favicon != "")
+                    {
+                        icon = favicon;
+                    }
+                }
+
+                AccountModel account = new AccountModel(UsernameField, encryptedValues, UrlField, Keys, icon);
+                
                 Accounts.Add(account);
                 FilteredItems = Accounts;
                 SearchText = "";
@@ -372,6 +394,7 @@ namespace PasswordManager.ViewModels
             Accounts = JsonController<AccountModel>.GetInfo("acc.json");
             FilteredItems = Accounts;
             RevealImg = (Image)Application.Current.FindResource("EyeImage");
+            Parser = new WebParser();
         }
 
         private void FilterItems()
