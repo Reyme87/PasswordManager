@@ -14,7 +14,7 @@ namespace PasswordManager.Models
         public WebParser()
         {
             _httpClient = new HttpClient();
-
+            _httpClient.Timeout = TimeSpan.FromSeconds(5);
         }
 
         public async Task<bool> CheckExistanceAsync(string url)
