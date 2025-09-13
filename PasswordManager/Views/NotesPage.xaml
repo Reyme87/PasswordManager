@@ -38,7 +38,7 @@
         <ListBox ItemsSource="{Binding Notes, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" SelectedItem="{Binding SelectedNote}" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="3" Margin="5" FontSize="18">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Label Content="{Binding Name}" FontSize="22" Foreground="{StaticResource ForeColor}"/>
+                    <TextBlock Text="{Binding Name}" FontSize="22" Foreground="{StaticResource ForeColor}" MaxWidth="190" MinWidth="190" TextTrimming="CharacterEllipsis"/>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
