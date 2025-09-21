@@ -83,8 +83,9 @@ namespace PasswordManager.ViewModels
             }
         }
 
-        private bool isRevealed = false;
-        private bool isChanging = false;
+        private bool _isRevealed = false;
+        private bool _isChanging = false;
+        private bool _isReady = true;
 
         #endregion
 
@@ -125,7 +126,7 @@ namespace PasswordManager.ViewModels
                 {
                     SelectedPassword = new string('●', SelectedAccount.Values.Length);
                     RevealImg = (Image)Application.Current.FindResource("EyeImage");
-                    isRevealed = false;
+                    _isRevealed = false;
                 }
             }
         }
@@ -158,8 +159,9 @@ namespace PasswordManager.ViewModels
 
         public async void OnAddAccountComandExecuted(object p)
         {
-            if (!isChanging)
+            if (!_isChanging)
             {
+                _isReady = false;
                 int[] Keys = Encryption.GenerateKeys(PasswordField.Length);
                 int[] encryptedValues = Encryption.Encrypt(PasswordField, Keys);
                 string icon = ((BitmapImage)Application.Current.FindResource("WebImage")).UriSource.ToString();
@@ -173,13 +175,14 @@ namespace PasswordManager.ViewModels
                 }
 
                 AccountModel account = new AccountModel(UsernameField, encryptedValues, UrlField, Keys, icon);
-                
+                _isReady = true;
+
                 Accounts.Add(account);
                 FilteredItems = Accounts;
                 SearchText = "";
                 JsonController<AccountModel>.LoadInfoAsync(Accounts, "acc.json");
-                UsernameField = PasswordField = UrlField = "";
-                isChanging = false;
+                UsernameField = PasswordField = UrlField = null;
+                _isChanging = false;
             }
 
             else
@@ -192,12 +195,12 @@ namespace PasswordManager.ViewModels
                 FilteredItems = Accounts;
                 SearchText = "";
                 JsonController<AccountModel>.LoadInfoAsync(Accounts, "acc.json");
-                UsernameField = PasswordField = UrlField = "";
-                isChanging = false;
+                UsernameField = PasswordField = UrlField = null;
+                _isChanging = false;
             }
         }
 
-        public bool CanAddAccountCommandExecute(object p) => !Equals(UsernameField, null) && !Equals(PasswordField, null) && !Equals(UrlField, null);
+        public bool CanAddAccountCommandExecute(object p) => _isReady && !Equals(UsernameField, null) && !Equals(PasswordField, null) && !Equals(UrlField, null);
 
         #endregion
 
@@ -207,10 +210,10 @@ namespace PasswordManager.ViewModels
 
         public void OnCancelCommandExecuted(object p)
         {
-            isChanging = false;
+            _isChanging = false;
         }
 
-        public bool CanCancelCommandExecute(object p) => true;
+        public bool CanCancelCommandExecute(object p) => _isReady;
 
         #endregion
 
@@ -239,7 +242,7 @@ namespace PasswordManager.ViewModels
             UsernameField = SelectedAccount.Username;
             PasswordField = Encryption.Decrypt(SelectedAccount.Values, SelectedAccount.Keys);
             UrlField = SelectedAccount.Url;
-            isChanging = true;
+            _isChanging = true;
         }
 
         public bool CanChangeAccountCommandExecute(object p) => !Equals(SelectedAccount, null);
@@ -308,17 +311,17 @@ namespace PasswordManager.ViewModels
 
         public void OnRevealPasswordCommandExecuted(object p)
         {
-            if (isRevealed)
+            if (_isRevealed)
             {
                 SelectedPassword = new string('●', SelectedAccount.Values.Length);
                 RevealImg = (Image)Application.Current.FindResource("EyeImage");
-                isRevealed = false;
+                _isRevealed = false;
             }
             else
             {
                 SelectedPassword = Encryption.Decrypt(SelectedAccount.Values, SelectedAccount.Keys);
                 RevealImg = (Image)Application.Current.FindResource("CrossedEyeImage");
-                isRevealed = true;
+                _isRevealed = true;
             }
         }
 
